@@ -1,0 +1,212 @@
+{
+    "programs": [
+      {
+        "program_name": "AIT: Aquincum Institute of Technology",
+        "location": "Budapest, Hungary"
+      },
+      {
+        "program_name": "API: Parsons Paris",
+        "location": "Paris, France"
+      },
+      {
+        "program_name": "Ashoka University, Sonipat, India",
+        "location": "Khewra, India"
+      },
+      {
+        "program_name": "Berlin Consortium (BCGS) - English Program",
+        "location": "Berlin, Germany"
+      },
+      {
+        "program_name": "Berlin Consortium for German Studies (BCGS)",
+        "location": "Berlin, Germany"
+      },
+      {
+        "program_name": "Bocconi University - Dyson Exchange",
+        "location": "Milan, Italy"
+      },
+      {
+        "program_name": "Bocconi University - Human Ecology Exchange",
+        "location": "Milan, Italy"
+      },
+      {
+        "program_name": "Bologna Consortial Studies Program (BCSP)",
+        "location": "Bologna, Italy"
+      },
+      {
+        "program_name": "BU: Geneva Internship Program",
+        "location": "Geneva, Switzerland"
+      },
+      {
+        "program_name": "BU: Geneva Physics Program",
+        "location": "Geneva, Switzerland"
+      },
+      {
+        "program_name": "BU: Sydney Internship Program",
+        "location": "Sydney, Australia"
+      },
+      {
+        "program_name": "Budapest Semesters in Mathematics",
+        "location": "Budapest, Hungary"
+      },
+      {
+        "program_name": "CASA Barcelona",
+        "location": "Barcelona, Spain"
+      },
+      {
+        "program_name": "CASA Cuba",
+        "location": "Havana, Cuba"
+      },
+      {
+        "program_name": "CASA Dublin: Trinity College Dublin",
+        "location": "Dublin, Ireland"
+      },
+      {
+        "program_name": "CASA Granada, Intensive Spanish Language",
+        "location": "Granada, Spain"
+      },
+      {
+        "program_name": "CASA Granada, Spanish Language and Culture",
+        "location": "Granada, Spain"
+      },
+      {
+        "program_name": "CASA Santiago",
+        "location": "Vitacura, Chile"
+      },
+      {
+        "program_name": "CASA Sevilla",
+        "location": "Seville, Spain"
+      },
+      {
+        "program_name": "Central Saint Martins (UAL): Integrated Program",
+        "location": "London, United Kingdom"
+      },
+      {
+        "program_name": "CET: Beijing, Intensive Language",
+        "location": "Beijing, China"
+      },
+      {
+        "program_name": "CET: Florence",
+        "location": "Florence, Italy"
+      },
+      {
+        "program_name": "CET: Jordan",
+        "location": "Amman, Jordan"
+      },
+      {
+        "program_name": "CET: Prague",
+        "location": "Prague, Czechia"
+      },
+      {
+        "program_name": "CET: Prague, Film Production",
+        "location": "Prague, Czechia"
+      },
+      {
+        "program_name": "CET: Shanghai, Chinese Studies & Internship",
+        "location": "Shanghai, China"
+      },
+      {
+        "program_name": "Chulalongkorn University (Chula), Thailand",
+        "location": "Bangkok, Thailand"
+      },
+      {
+        "program_name": "CIEE: Amsterdam, Social Sciences and Humanities",
+        "location": "Amsterdam, Netherlands"
+      },
+      {
+        "program_name": "CIEE: Barcelona, Language and Culture",
+        "location": "Barcelona, Spain"
+      },
+      {
+        "program_name": "CIEE: Paris, Open Campus",
+        "location": "Paris, France"
+      },
+      {
+        "program_name": "CIEE: Semester in Madrid",
+        "location": "Madrid, Spain"
+      },
+      {
+        "program_name": "CIEE: University of Cape Town",
+        "location": "Cape Town, South Africa"
+      },
+      {
+        "program_name": "City University Hong Kong (CityU)",
+        "location": "Hong Kong, Hong Kong"
+      },
+      {
+        "program_name": "College Year in Athens - Semester and Academic Year Program",
+        "location": "Athens, Greece"
+      },
+      {
+        "program_name": "Comillas-ICAI - Engineering Exchange",
+        "location": "Madrid, Spain"
+      },
+      {
+        "program_name": "Copenhagen Business School",
+        "location": "Copenhagen, Denmark"
+      },
+      {
+        "program_name": "Cornell Prelaw Summer Program in Paris",
+        "location": "Paris, France"
+      },
+      {
+        "program_name": "Cornell Spring Break Program in Ecuador - Culture, Communities, and Development",
+        "location": "Quito, Ecuador"
+      },
+      {
+        "program_name": "Cornell Spring Break Program in London - Global Health and Environmental Justice",
+        "location": "London, United Kingdom"
+      },
+      {
+        "program_name": "Cornell Summer Program in Madrid",
+        "location": "Madrid, Spain"
+      },
+      {
+        "program_name": "Cornell Summer Program in Turin - Public Policy",
+        "location": "Turin, Italy"
+      },
+      {
+        "program_name": "Cornell Winter Program in Cambodia - Labor Development and Society",
+        "location": "Krong Siem Reap and Phnom Penh, Cambodia"
+      },
+      {
+        "program_name": "Cornell Winter Program in Ecuador - Politics of Sustainable Development",
+        "location": "Quito, Ecuador"
+      },
+      {
+        "program_name": "Cornell Winter Program in Mexico - Experiential Writing",
+        "location": "Oaxaca, Mexico"
+      },
+      {
+        "program_name": "Cornell Winter Program in Zambia – History and Politics of Southern Africa",
+        "location": "Lusaka, Zambia"
+      },
+      {
+        "program_name": "Cornell-China and Asia-Pacific Studies (CAPS) Program",
+        "location": "Beijing, China"
+      },
+      {
+        "program_name": "Cornell-Keystone NFLP Summer Program in India",
+        "location": "India"
+      },
+      {
+        "program_name": "Delft University of Technology - Human Ecology Exchange",
+        "location": "Delft, Netherlands"
+      },
+      {
+        "program_name": "DIS: Semester in Copenhagen",
+        "location": "Copenhagen, Denmark"
+      },
+      {
+        "program_name": "DIS: Semester in Stockholm",
+        "location": "Stockholm, Sweden"
+      },
+      {
+        "program_name": "EcoQuest: Ecology in Action",
+        "location": "Whakatīwai, New Zealand"
+      },
+      {
+        "program_name": "EcoQuest: Sustainable Agriculture & Food Systems",
+        "location": "New Zealand"
+      }
+    ]
+  }

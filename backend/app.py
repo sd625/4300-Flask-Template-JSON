@@ -20,7 +20,7 @@ json_file_path = os.path.join(current_directory, 'cornell-programs')
 # Assuming your JSON data is stored in a file named 'init.json'
 with open(json_file_path, 'r') as file:
     data = json.load(file)[0]
-    programs = pd.DataFrame(data['programs'])
+    programs_df = pd.DataFrame(data['programs'])
 
 app = Flask(__name__)
 CORS(app)
@@ -48,15 +48,26 @@ def tokenize(text):
     
     return words
     
-def rank_programs_jaccard(data, query):
+def rank_programs_jaccard(query):
     query_words = tokenize(query)
     rankings = []
-    for program in data:
-        program_name_words = tokenize(program['program_name'])
-        similarity = jaccard(query_words, program_name_words)
-        rankings.append((program['id'], similarity))
+    counter = 0
+    for program in programs_df:
+        program_name_words = tokenize(program[0])
+        program_location_words = tokenize(program[1])
+        program_info = program_name_words + program_location_words
+        similarity = jaccard(query_words, program_info)
+        rankings.append((counter, similarity, program[0], program[1]))
+        counter += 1
     rankings.sort(key=lambda x: x[1], reverse=True)
-    return rankings
+    rankings = rankings[:10]
+    json_data = [
+    {"id": id, "program_name": program_name, "location": program_location}
+    for id, _, program_name, program_location in rankings ]
+
+    json_string = json.dumps(json_data, indent=2)
+
+    return json_string
 
 
 @app.route("/")
@@ -68,10 +79,10 @@ def search():
     text = request.args.get("title")
     return rank_programs_jaccard(text)
 
-# @app.route("/episodes")
-# def episodes_search():
-#     text = request.args.get("title")
-#     return json_search(text)
+@app.route("/episodes")
+def episodes_search():
+    text = request.args.get("title")
+    return rank_programs_jaccard(text)
 
 if 'DB_NAME' not in os.environ:
     app.run(debug=True,host="0.0.0.0",port=5000)

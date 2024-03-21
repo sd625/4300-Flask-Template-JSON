@@ -15,27 +15,20 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
 # Specify the path to the JSON file relative to the current script
-json_file_path = os.path.join(current_directory, 'cornell-programs')
+json_file_path = os.path.join(current_directory, 'cornell-programs.json')
 
 # Assuming your JSON data is stored in a file named 'init.json'
 with open(json_file_path, 'r') as file:
-    data = json.load(file)[0]
+    data = json.load(file)
     programs_df = pd.DataFrame(data['programs'])
 
 app = Flask(__name__)
 CORS(app)
 
-# def json_search(query):
-#     matches = []
-#     merged_df = pd.merge(episodes_df, reviews_df, left_on='id', right_on='id', how='inner')
-#     matches = merged_df[merged_df['title'].str.lower().str.contains(query.lower())]
-#     matches_filtered = matches[['title', 'descr', 'imdb_rating']]
-#     matches_filtered_json = matches_filtered.to_json(orient='records')
-#     return matches_filtered_json
-
-
 def jaccard(s1, s2):
-    if len(s1) == 0 or len(2) == 0:
+    s1 = set(s1)
+    s2 = set(s2)
+    if len(s1) == 0 or len(s2) == 0:
         return 0 
     intersection = len(s1.intersection(s2))
     union = len(s1.union(s2))
@@ -52,20 +45,25 @@ def rank_programs_jaccard(query):
     query_words = tokenize(query)
     rankings = []
     counter = 0
-    for program in programs_df:
-        program_name_words = tokenize(program[0])
-        program_location_words = tokenize(program[1])
+    for index, row in programs_df.iterrows():
+        
+        program_name = row['program_name']
+        program_location = row['location']
+        program_name_words = tokenize(program_name)
+        program_location_words = tokenize(program_location)
         program_info = program_name_words + program_location_words
         similarity = jaccard(query_words, program_info)
-        rankings.append((counter, similarity, program[0], program[1]))
+        rankings.append((counter, similarity, program_name, program_location))
         counter += 1
     rankings.sort(key=lambda x: x[1], reverse=True)
     rankings = rankings[:10]
     json_data = [
-    {"id": id, "program_name": program_name, "location": program_location}
-    for id, _, program_name, program_location in rankings ]
+    {"id": id, "program_name": program_name, "program_location": program_location}
+    for id, _, program_name, program_location in rankings]
+    print(json_data)
 
     json_string = json.dumps(json_data, indent=2)
+    
 
     return json_string
 
@@ -74,13 +72,8 @@ def rank_programs_jaccard(query):
 def home():
     return render_template('base.html',title="sample html")
 
-@app.route("/search")
+@app.route("/search_programs")
 def search():
-    text = request.args.get("title")
-    return rank_programs_jaccard(text)
-
-@app.route("/episodes")
-def episodes_search():
     text = request.args.get("title")
     return rank_programs_jaccard(text)
 

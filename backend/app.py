@@ -7,6 +7,9 @@ import pandas as pd
 import numpy as np
 import re
 
+#number of results on one page
+MAX_RESULTS = 10
+
 # ROOT_PATH for linking with all your files. 
 # Feel free to use a config.py or settings.py with a global export variable
 os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
@@ -26,8 +29,6 @@ app = Flask(__name__)
 CORS(app)
 
 def jaccard(s1, s2):
-    s1 = set(s1)
-    s2 = set(s2)
     if len(s1) == 0 or len(s2) == 0:
         return 0 
     intersection = len(s1.intersection(s2))
@@ -38,32 +39,33 @@ def jaccard(s1, s2):
 def tokenize(text):
     text = text.lower()
     words = re.findall("[a-zA-Z]+", text)
-    
-    return words
+    return set(words)
     
 def rank_programs_jaccard(query):
+
     query_words = tokenize(query)
     rankings = []
-    counter = 0
+    
     for index, row in programs_df.iterrows():
         
         program_name = row['program_name']
         program_location = row['location']
-        program_name_words = tokenize(program_name)
-        program_location_words = tokenize(program_location)
-        program_info = program_name_words + program_location_words
+        
+        program_info = tokenize(program_name).union(tokenize(program_location))
         similarity = jaccard(query_words, program_info)
-        rankings.append((counter, similarity, program_name, program_location))
-        counter += 1
+
+        if similarity > 0:
+            rankings.append((index, similarity, program_name, program_location))
+        
     rankings.sort(key=lambda x: x[1], reverse=True)
-    rankings = rankings[:10]
+    l = min(len(rankings), MAX_RESULTS)
+    rankings = rankings[:l]
+
     json_data = [
     {"id": id, "program_name": program_name, "program_location": program_location}
     for id, _, program_name, program_location in rankings]
-    print(json_data)
 
     json_string = json.dumps(json_data, indent=2)
-    
 
     return json_string
 

@@ -4,74 +4,50 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet">
-<body>
-    <div class="full-body-container">
-        <div class="top-text">
-            <div class="google-colors">
-                <h1 id="google-4">Global</h1>
-                <h1 id="google-3">EdQuest</h1>
-                <h1 id="google-0-1">0</h1>
-                <h1 id="google-0-2">0</h1>
-            </div>
-            <div class="input-box" onclick="sendFocus()">
-                <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                <input placeholder="Search for A Study Abroad Program" id="filter-text-val" onkeyup="filterText()">
-            </div>
-        </div>
-        <div id="answer-box">
+<link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
 
-        </div>
+<body>
+    <header>
+            <h1 >Global Ed Quest</h1>
+    </header>
+
+    <p class = "slogan"> Your Academic Destination Awaits ✈️ </p>
+
+    <div class="input-box" onclick="sendFocus()">
+        <img src="{{ url_for('static', filename='images/mag.png') }}" />
+        <input placeholder="Search for a Study Abroad Program" id="filter-text-val" onkeyup="filterText()">
     </div>
+
+    <div id="answer-box"> </div>
+
+
 
     <script>
 
-        // function answerBoxTemplate(title,titleDesc,rating){
-        //     return `<div class=''>
-        //         <h3 class='episode-title'>${title}</h3>
-        //         <p class='episode-desc'>${titleDesc}</p>
-        //         <p class='episode-rating'>IMDB Rating: ${rating}</p>
-        //     </div>`
-        // }
-
-        function answerBoxTemplate(name,location){
-            return `<div class=''>
-                <h2 class='program-name'>${name}</h2>
-                <h3 class='program-location'>${location}</h3>
+        function answerBoxTemplate(program_name, program_location) {
+            return `<div class='answer'>
+                <h3 class='program-name'>${program_name}</h3>
+                <p class='program-location'> Location: ${program_location}</p>
             </div>`
         }
 
-        function sendFocus(){
+        function sendFocus() {
             document.getElementById('filter-text-val').focus()
         }
 
-        function filterText(){
+        function filterText() {
             document.getElementById("answer-box").innerHTML = ""
             console.log(document.getElementById("filter-text-val").value)
-            fetch("/search?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
-            .then((response) => response.json())
-            .then((data) => data.forEach(row => {
-                
-                let tempDiv = document.createElement("div")
-                tempDiv.innerHTML = answerBoxTemplate(row.program_name, row.location)
-                document.getElementById("answer-box").appendChild(tempDiv)
-            }));
+            fetch("/search_programs?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
+                .then((response) => response.json())
+                .then((data) => data.forEach(row => {
+
+                    let tempDiv = document.createElement("div")
+                    tempDiv.innerHTML = answerBoxTemplate(row.program_name, row.program_location)
+                    document.getElementById("answer-box").appendChild(tempDiv)
+                }));
 
         }
 
-
-        // function filterText(){
-        //     document.getElementById("answer-box").innerHTML = ""
-        //     console.log(document.getElementById("filter-text-val").value)
-        //     fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
-        //     .then((response) => response.json())
-        //     .then((data) => data.forEach(row => {
-                
-        //         let tempDiv = document.createElement("div")
-        //         tempDiv.innerHTML = answerBoxTemplate(row.title,row.descr,row.imdb_rating)
-        //         document.getElementById("answer-box").appendChild(tempDiv)
-        //     }));
-
-        // }
-            
     </script>
 </body>

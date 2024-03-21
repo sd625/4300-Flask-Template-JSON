@@ -1,51 +1,35 @@
-.full-body-container{
-    position: absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    width:100%;
-    height:100%;
+body{
     display: flex;
-    justify-content: start;
+    position: relative;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
+    text-align: center;
+    margin: 0; 
+    padding: 0;
 }
 
-#google-c{
-    color:#4285F4;
+
+header{
+    background-size: cover;
+    background-image: url('images/header.png');
+    background-position: center;
+    background-repeat: no-repeat; 
+    height:20%;
+    width:100%;
+    text-align: center;
+    font-size: 50px;
+    font-family: "Italianno", cursive;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: white;
 }
 
-#google-s{
-    color:#DB4437;
-}
 
-#google-4{
-    color:	#F4B400;
-}
 
-#google-3{
-    color:	#4285F4;
-}
-
-#google-0-1{
-    color:	#0F9D58;
-}
-
-#google-0-2{
-    color:#DB4437;
-}
-
-.google-colors{
-    display: flex;
-    align-items: center;
-    font-size: 48px;
-    font-family: 'Open Sans', sans-serif;
-}
-
-.google-colors h1{
-    margin-bottom: 0;
-    margin-right: 3px;
+.slogan {
+     font-size:25px;
+    margin-top: 3%;
 }
 
 .input-box{
@@ -53,7 +37,7 @@
     border:1px solid black;
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 2%;
     padding:12px;
     width: 600px;
 }
@@ -63,11 +47,6 @@
     width:20px;
 }
 
-.top-text{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
 .input-box input{
     width: 100%;
@@ -77,15 +56,17 @@
     outline: 0;
 }
 
-#answer-box{
-    width: 700px;
-    margin-top:50px; 
+.answer{
+        border-bottom: 1px solid black;
+        padding: 10px;
 }
 
-.episode-title{
+.program-name{
     font-family: 'Kanit', sans-serif;
+    font-size:25px;
 }
 
-.episode-desc{
+.program-location{
     font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
 }

@@ -5,6 +5,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
 
 <body>
     <header>
@@ -12,22 +13,168 @@
     </header>
 
     <p class = "slogan"> Your Academic Destination Awaits ✈️ </p>
+    <div class = "row">
 
-    <div class="input-box" onclick="sendFocus()">
-        <img src="{{ url_for('static', filename='images/mag.png') }}" />
-        <input placeholder="Search for a Study Abroad Program" id="filter-text-val" onkeyup="filterText()">
+        <div class = "sidebar">
+            <h2 class="sidebar-head">PREFRENCES</h2>
+
+            <div class = "gpa">
+                <h4 class="title"> Minimum GPA:</h4>
+                <div class="gpa-input-box">
+                        <img src="{{ url_for('static', filename='images/mag.png') }}" />
+                        <input placeholder="e.g. 3.0" list="gpas" name="gpa" id="gpa" />
+                </div>
+                    <datalist id="gpas">
+                    <!-- JavaScript loop to generate options with values from 1.00 to 4.00 -->
+                    <script>
+                        const options = [];
+                        for (let i = 100; i <= 400; i++) {
+                          let gpaValue = (i / 100).toFixed(2); 
+                          options.push(gpaValue);
+                        }
+                        const inputField = document.getElementById('gpa');
+                        inputField.addEventListener('input', function() {
+                          const filteredOptions = options.filter(option => option.startsWith(this.value));
+                          renderOptions(filteredOptions);
+                        });
+                      
+                        function renderOptions(optionsArray) {
+                          const datalist = document.getElementById('gpas');
+                          datalist.innerHTML = ''; // Clear existing options
+                          optionsArray.forEach(option => {
+                            const optionElement = document.createElement('option');
+                            optionElement.value = option;
+                            datalist.appendChild(optionElement);
+                          });
+                        }
+                      
+                        renderOptions(options);
+                      </script>
+                    </datalist>
+            </div>
+
+    
+
+            <div class = "major">
+                <h4 class="title">Filter by Department:</h4>
+                <div class="major-input-box">
+                    <img src="{{ url_for('static', filename='images/mag.png') }}" />
+                    <input placeholder="e.g. Computer Science" list="majors" name="major" id="major" />
+                </div>
+                <datalist id="majors">
+                <option value="Africana Studies & Research Center (ASRC)">Africana Studies & Research Center (ASRC)</option>
+                <option value="Agriculture & Life Sciences (ALS)">Agriculture & Life Sciences (ALS)</option>
+                <option value="American Studies (AMST)">American Studies (AMST)</option>
+                <option value="Animal Science (ANSC)">Animal Science (ANSC)</option>
+                <option value="Anthropology (ANTHR)">Anthropology (ANTHR)</option>
+                <option value="Applied Economics & Management (AEM)">Applied Economics & Management (AEM)</option>
+                <option value="Architecture (ARCH)">Architecture (ARCH)</option>
+                <option value="Art (ART)">Art (ART)</option>
+                <option value="Art History (ARTH)">Art History (ARTH)</option>
+                <option value="Asian American Studies (AAS)">Asian American Studies (AAS)</option>
+                <option value="Asian Studies (ASIAN)">Asian Studies (ASIAN)</option>
+                <!-- Add more majors -->
+                </datalist>
+            </div>
+            <div class="college">
+                <h4 class="title">Filter by College:</h4>
+                <div class="college-input-box">
+                    <img src="{{ url_for('static', filename='images/mag.png') }}" />
+                    <input placeholder="e.g. College of Arts & Sciences" list="colleges" name="college" id="college" />
+                </div>
+                <datalist id="colleges">
+                    <option value="College of Agriculture and Life Sciences (CALS)">College of Agriculture and Life Sciences (CALS)</option>
+                    <option value="College of Architecture, Art, and Planning (AAP)">College of Architecture, Art, and Planning (AAP)</option>
+                    <option value="College of Arts and Sciences (AS)">College of Arts and Sciences (AS)</option>
+                    <option value="Cornell SC Johnson College of Business">Cornell SC Johnson College of Business</option>
+                    <option value="College of Engineering (ENG)">College of Engineering (ENG)</option>
+                    <option value="College of Human Ecology (CHE)">College of Human Ecology (CHE)</option>
+                    <option value="School of Hotel Administration (SHA)">School of Hotel Administration (SHA)</option>
+                    <option value="Cornell University Graduate School">Cornell University Graduate School</option>
+                    <option value="Cornell Law School">Cornell Law School</option>
+                    <option value="Samuel Curtis Johnson Graduate School of Management">Samuel Curtis Johnson Graduate School of Management</option>
+                    <option value="Cornell Tech">Cornell Tech</option>
+                    <!-- Add more colleges -->
+                </datalist>
+            </div>
+
+            <div class="location">
+                <h4 class="title">Filter by Location:</h4>
+                <div class="location-checkboxes">
+                    <label class = "checkbox"><input type="checkbox" name="location" value="USA"> USA</label><br>
+                    <label class = "checkbox"><input type="checkbox" name="location" value="Canada"> Canada</label><br>
+                    <label class = "checkbox"><input type="checkbox" name="location" value="UK"> UK</label><br>
+                    <label class = "checkbox" ><input type="checkbox" name="location" value="Australia"> Australia</label><br>
+                    <!-- Add more countries as needed -->
+                </div>
+            </div>
+
+            <div class="flexible">
+
+                    <h4 class="title">Are Your Preferences Flexible?</h4>
+                    <div class="flexibility-checkboxes">
+                        <label class = "checkbox"><input type="checkbox" name="flexible" value="True"> </label><br>
+                    </div>
+
+            </div>
+              
+            <button id="submit">SUBMIT</button>
+
+            <script>
+                document.getElementById('submit').addEventListener('click', function() {
+                    const inputs = document.querySelectorAll('input');
+                    const formData = {};
+            
+                    inputs.forEach(input => {
+                        if (input.type === 'checkbox') {
+                            if (input.checked) {
+                                if (!formData[input.name]) {
+                                    formData[input.name] = [input.value];
+                                } else {
+                                    formData[input.name].push(input.value);
+                                }
+                            }
+                        } else {
+                            formData[input.name] = input.value;
+                        }
+                    });
+            
+                    console.log(formData);
+                    return formData;
+                });
+            </script>
+            
+        </div>
+        
+
+    
+        <div class = "search">
+            <div class="input-box" onclick="sendFocus()">
+                <img src="{{ url_for('static', filename='images/mag.png') }}" />
+                <input placeholder="Search for a Study Abroad Program" id="filter-text-val" onkeyup="filterText()">
+            </div>
+            <div id="answer-box"> </div>
+        </div>
     </div>
 
-    <div id="answer-box"> </div>
-
-
-
     <script>
-
+                        //         <!-- UPDATE THE FOLLOWING WITH CHANGES TO DATABASE  -->
+                        // <!-- IMPLEMENT FOR EACH LOOP FOR EACH REVIEW   -->
         function answerBoxTemplate(program_name, program_location) {
             return `<div class='answer'>
                 <h3 class='program-name'>${program_name}</h3>
-                <p class='program-location'> Location: ${program_location}</p>
+                 <div class = "row">   
+                    <h3 class='program-details'> Location: ${program_location} </h3> 
+                </div>
+                <div class = "row">   
+                     <h3 class ='program-details'> Minimum GPA:  3.0  </h3>
+                </div>
+                <div class = "row">   
+                     <h3 class = 'program-details'> College: College of Arts & Sciences </h3> 
+                </div>
+                <div class = "row">   
+                     <h3 class = 'program-details'> Department: Information Science </h3>
+                </div>
             </div>`
         }
 

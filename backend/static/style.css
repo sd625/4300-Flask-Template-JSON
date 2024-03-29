@@ -7,6 +7,7 @@ body{
     text-align: center;
     margin: 0; 
     padding: 0;
+
 }
 
 
@@ -19,17 +20,30 @@ header{
     width:100%;
     text-align: center;
     font-size: 50px;
-    font-family: "Italianno", cursive;
+    /* font-family: "Italianno", cursive; */
+    font-family: "Comfortaa", sans-serif;
     font-weight: 400;
     letter-spacing: 1px;
     color: white;
 }
 
 
-
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    align-items: flex-start;
+}
 .slogan {
      font-size:25px;
     margin-top: 3%;
+}
+
+.sidebar-head{
+    font-family: "Comfortaa", sans-serif;
+    font-weight: bolder;
+    font-size: 20px;
 }
 
 .input-box{
@@ -40,33 +54,180 @@ header{
     margin-top: 2%;
     padding:12px;
     width: 600px;
+    margin-left:auto;
+    margin-right:auto;
 }
 
-.input-box img{
+.gpa-input-box{
+    border-radius: 50px;
+    border:1px solid black;
+    display: flex;
+    align-items: center;
+    margin-top: 2%;
+    padding:12px;
+    width: 100px;
+
+}
+
+.major-input-box, .college-input-box{
+    border-radius: 50px;
+    border:1px solid black;
+    display: flex;
+    align-items: center;
+    margin-top: 2%;
+    padding:12px;
+    width: 400px;
+
+}
+
+.input-box img, .major-input-box img, .gpa-input-box img, .college-input-box img{
     height: 20px;
     width:20px;
 }
 
 
-.input-box input{
+.input-box input, .gpa-input-box input, .major-input-box input, .college-input-box input{
     width: 100%;
-    margin-left: 10px;
     font-size: 16px;
     border: none;
     outline: 0;
 }
 
 .answer{
-        border-bottom: 1px solid black;
-        padding: 10px;
+    width: 100%;
+    height: auto;
+    margin-left:auto;
+    margin-right:auto;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2%;
+}
+
+.answer:hover{
+    transform: scale(1.1);
 }
 
 .program-name{
     font-family: 'Kanit', sans-serif;
-    font-size:25px;
+    font-size:30px;
 }
 
-.program-location{
+.program-details{
     font-family: 'Montserrat', sans-serif;
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: bolder;
+}
+
+.sidebar{
+    width: 500px;
+    height: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-left: 5%;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    margin-right: 5%;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+}
+
+.search{
+    width: 900px;
+    height: auto;
+    margin:5%;
+    margin-top:0%;
+    padding: 0;
+    margin-bottom: 2%;
+    
+}
+
+#answer-box{
+    margin-top:5%
+}
+
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.left{
+    width:45%;
+
+}
+
+.right{
+    width: 55%; 
+}
+
+.bubble-gpa, .bubble-college, .bubble-major, .bubble-loc {
+    display: inline-block;
+    padding: 10px 10px;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 50px;
+    margin: 5%;
+    font-size: 15px;
+    
+
+}
+
+.bubble-gpa{
+    background-color: rgb(178, 215, 244);}
+
+.bubble-loc{
+    background-color: rgb(178, 244, 209);
+}
+
+.bubble-college{
+    background-color: rgb(244, 178, 178);
+}
+
+.bubble-major{
+    background-color: rgb(178, 244, 209);
+}
+
+.gpa{
+    align-items: center;
+}
+
+
+
+label.checkbox {
+    position: relative;
+    display: inline-block;
+    padding-left: 25px; 
+    cursor: pointer;
+}
+
+
+.flexibility-checkboxes{
+    margin-top:1%;
+}
+
+
+button {
+    background-color: #5579ab;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width:20%;
+    margin-top: 5%;
+}
+
+button:hover {
+    background-color: #a84d4d;
+
 }

@@ -190,7 +190,7 @@
                 .then((data) => data.forEach(row => {
 
                     let tempDiv = document.createElement("div")
-                    tempDiv.innerHTML = answerBoxTemplate(row.program_name, row.program_location)
+                    tempDiv.innerHTML = answerBoxTemplate(row.program, row.program_location)
                     document.getElementById("answer-box").appendChild(tempDiv)
                 }));
 

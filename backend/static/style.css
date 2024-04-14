@@ -231,3 +231,36 @@ button:hover {
     background-color: #a84d4d;
 
 }
+
+
+.location {
+    border:1px solid black;
+    display: flex;
+    align-items: center;
+    margin-top: 2%;
+    padding:12px;
+    width: 400px;
+    font-size: 16px;
+    outline: 0;
+}
+
+
+#locations {
+    width: 100%; /* Full width */
+    height: 100vh; /* Full height of the viewport */
+    position: fixed; /* Fixed position to cover the whole screen */
+    top: 0;
+    left: 0;
+    background-color: white; /* Non-transparent background */
+    z-index: 1000; /* Makes sure it is on top of other content */
+    display: none; /* Hidden by default */
+}
+
+/* Style for the open state of the dropdown */
+#locations.open {
+    display: block; /* Show dropdown when it is open */
+    background-color: white; /* Non-transparent background */
+    z-index: 1000; /* Makes sure it is on top of other content */
+
+}
+

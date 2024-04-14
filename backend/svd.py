@@ -6,7 +6,11 @@ from scipy.sparse.linalg import svds
 from sklearn.preprocessing import normalize
 
 #list of programs and the reviews associated with them
+#each program has their list of tokens already in the json, so you can just access that directly
 programs = []
+
+#see lines 49-52 in app.py and just add one for 'tokens'
+#tokenize the location with regular jaccard & union with the tokens
 
 #to get from user
 query = ""
@@ -30,6 +34,7 @@ def review_svd(review_df, k_value = 100):
   
   top_programs = closest_programs_to_query(query, vectorizer, docs_compressed_normed, words_compressed)
 
+  # return as a json string (can just copy code from lines 64-68 with id, sim, program, program loc)
   return top_programs
 
 def closest_programs_to_query(query, vectorizer, docs_compressed_normed, words_compressed, k = 5):
@@ -39,4 +44,5 @@ def closest_programs_to_query(query, vectorizer, docs_compressed_normed, words_c
 
     sims = docs_compressed_normed.dot(query_vec)
     asort = np.argsort(-sims)[:k+1]
+    # include program location in output as well (see line 58 in app.py)
     return [(i, programs[i][0],sims[i]) for i in asort[1:]]

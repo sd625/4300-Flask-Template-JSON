@@ -18,7 +18,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
 # Specify the path to the JSON file relative to the current script
-json_file_path = os.path.join(current_directory, 'cornell-programs.json')
+json_file_path = os.path.join(current_directory, 'cornell-programs-tokens.json')
 
 # Assuming your JSON data is stored in a file named 'init.json'
 with open(json_file_path, 'r') as file:
@@ -48,7 +48,7 @@ def rank_programs_jaccard(query):
     
     for index, row in programs_df.iterrows():
         
-        program_name = row['program_name']
+        program_name = row['program']
         program_location = row['location']
         
         program_info = tokenize(program_name).union(tokenize(program_location))
@@ -62,7 +62,7 @@ def rank_programs_jaccard(query):
     rankings = rankings[:l]
 
     json_data = [
-    {"id": id, "program_name": program_name, "program_location": program_location}
+    {"id": id, "program": program_name, "program_location": program_location}
     for id, _, program_name, program_location in rankings]
 
     json_string = json.dumps(json_data, indent=2)

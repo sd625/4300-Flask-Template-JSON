@@ -7,6 +7,8 @@ import pandas as pd
 import numpy as np
 import re
 
+from svd import *
+
 #number of results on one page
 MAX_RESULTS = 10
 
@@ -42,10 +44,9 @@ def tokenize(text):
     return set(words)
     
 def rank_programs_jaccard(query):
-
     query_words = tokenize(query)
     rankings = []
-    
+    print(query)
     for index, row in programs_df.iterrows():
         
         program_name = row['program']
@@ -70,14 +71,28 @@ def rank_programs_jaccard(query):
     return json_string
 
 
+def rank_programs_svd(query):
+
+    review_svd_json_string = review_svd(programs_df, query)
+    return review_svd_json_string
+
+
 @app.route("/")
 def home():
     return render_template('base.html',title="sample html")
 
+
+#Old Method Using Jaccard
+# @app.route("/search_programs")
+# def search():
+    
+#     text = request.args.get("title")
+#     return rank_programs_jaccard(text)
+
 @app.route("/search_programs")
 def search():
     text = request.args.get("title")
-    return rank_programs_jaccard(text)
+    return rank_programs_svd(text)
 
 if 'DB_NAME' not in os.environ:
     app.run(debug=True,host="0.0.0.0",port=5000)

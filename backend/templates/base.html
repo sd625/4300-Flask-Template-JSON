@@ -6,6 +6,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
 
 <body>
     <header>
@@ -25,11 +28,12 @@
                         <input placeholder="e.g. 3.0" list="gpas" name="gpa" id="gpa" />
                 </div>
                     <datalist id="gpas">
+                        
                     <!-- JavaScript loop to generate options with values from 1.00 to 4.00 -->
                     <script>
                         const options = [];
-                        for (let i = 10; i <= 40; i++) {
-                          let gpaValue = (i / 10).toFixed(1); 
+                        for (let i = 100; i <= 400; i++) {
+                          let gpaValue = (i / 100).toFixed(2); 
                           options.push(gpaValue);
                         }
                         const inputField = document.getElementById('gpa');
@@ -46,14 +50,12 @@
                             optionElement.value = option;
                             datalist.appendChild(optionElement);
                           });
-                        }
-                      
+                        } 
                         renderOptions(options);
                       </script>
                     </datalist>
             </div>
 
-    
 
             <div class = "major">
                 <h4 class="title">Filter by Department:</h4>
@@ -89,59 +91,112 @@
                     <option value="Cornell SC Johnson College of Business">Cornell SC Johnson College of Business</option>
                     <option value="College of Engineering (ENG)">College of Engineering (ENG)</option>
                     <option value="College of Human Ecology (CHE)">College of Human Ecology (CHE)</option>
-                    <option value="School of Hotel Administration (SHA)">School of Hotel Administration (SHA)</option>
-                    <option value="Cornell University Graduate School">Cornell University Graduate School</option>
-                    <option value="Cornell Law School">Cornell Law School</option>
-                    <option value="Samuel Curtis Johnson Graduate School of Management">Samuel Curtis Johnson Graduate School of Management</option>
-                    <option value="Cornell Tech">Cornell Tech</option>
-                    <!-- Add more colleges -->
+                    <option value="Cornell Ann S. Bowers College of Computing and Information Science">Cornell Ann S. Bowers College of Computing and Information Science(CIS)</option>
+                    <option value="School of Industrial and Labor Relations">School of Industrial and Labor Relations (ILR)</option>
+                    <option value="Cornell Jeb E. Brooks School of Public Policy">Cornell Jeb E. Brooks School of Public Policy</option>
                 </datalist>
             </div>
-
-            <div class="location">
-                <h4 class="title">Filter by Location:</h4>
-                <div class="location-checkboxes">
-                    <label class = "checkbox"><input type="checkbox" name="location" value="USA"> USA</label><br>
-                    <label class = "checkbox"><input type="checkbox" name="location" value="Canada"> Canada</label><br>
-                    <label class = "checkbox"><input type="checkbox" name="location" value="UK"> UK</label><br>
-                    <label class = "checkbox" ><input type="checkbox" name="location" value="Australia"> Australia</label><br>
-                    <!-- Add more countries as needed -->
-                </div>
+          
+            <div>
+                <h4 class="title">Filter by Location(s):</h4>
+                <div class = "location">
+                <select id="locations" name="locations[]" multiple placeholder="Select locations" >
+                    <option value="Hungary">Hungary</option>
+                    <option value="France">France</option>
+                    <option value="India">India</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Switzerland">Switzerland</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Cuba">Cuba</option>
+                    <option value="Ireland">Ireland</option>
+                    <option value="Chile">Chile</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="China">China</option>
+                    <option value="Jordan">Jordan</option>
+                    <option value="Czechia">Czechia</option>
+                    <option value="Thailand">Thailand</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="Hong Kong">Hong Kong</option>
+                    <option value="Greece">Greece</option>
+                    <option value="Denmark">Denmark</option>
+                    <option value="Ecuador">Ecuador</option>
+                    <option value="Cambodia">Cambodia</option>
+                </select>
+            </div>
             </div>
 
-            <div class="flexible">
+            <!-- Creates a multiselect option for the location dropdown -->
+            <!-- <script>
+                new TomSelect('#locations',{
+                    create: false, // Set to false if you don't want users to create new tags
+                    plugins: ['remove_button'], // Enables a remove button on each tag
+                    persist: false, // Prevents created tags from showing up in the dropdown
+                    hideSelected: true, // Option selected won't show in the dropdown menu
+                    closeAfterSelect: true, // Closes the dropdown after selection (optional)
+                    maxItems: null // No limit on the number of items that can be selected
+                });
+            
+            </script> -->
+            <script>
+                document.getElementById('locations').addEventListener('click', function() {
+                    this.classList.toggle('open'); // Toggles the 'open' class to show/hide the dropdown
+                });
+            
+                // Initialize TomSelect with adjusted settings
+                new TomSelect('#locations', {
+                    create: false,
+                    plugins: ['remove_button'],
+                    persist: false,
+                    hideSelected: true,
+                    closeAfterSelect: true,
+                    maxItems: null,
+                    onDropdownOpen: function() {
+                        document.getElementById('locations').classList.add('open');
+                    },
+                    onDropdownClose: function() {
+                        document.getElementById('locations').classList.remove('open');
+                    }
+                });
+            </script>
+            
 
+             <div class="flexible">
                     <h4 class="title">Are Your Preferences Flexible?</h4>
                     <div class="flexibility-checkboxes">
                         <label class = "checkbox"><input type="checkbox" name="flexible" value="True"> </label><br>
                     </div>
 
-            </div>
+            </div> 
               
             <button id="submit">SUBMIT</button>
 
             <script>
                 document.getElementById('submit').addEventListener('click', function() {
                     const inputs = document.querySelectorAll('input');
+                    const locs = document.getElementById('locations');
                     const formData = {};
-            
                     inputs.forEach(input => {
-                        if (input.type === 'checkbox') {
-                            if (input.checked) {
-                                if (!formData[input.name]) {
-                                    formData[input.name] = [input.value];
-                                } else {
-                                    formData[input.name].push(input.value);
-                                }
-                            }
-                        } else {
+                        if (input.type === "checkbox") {
+                             formData[input.name] = input.checked;
+                        } else{
                             formData[input.name] = input.value;
                         }
+                        });
+                    formData['locations'] = [];
+
+                    Array.from(locs.options).forEach(option => {
+                        if (option.selected) {
+                            formData['locations'].push(option.value);
+                        }
                     });
-            
                     console.log(formData);
                     return formData;
                 });
+
+
             </script>
             
         </div>

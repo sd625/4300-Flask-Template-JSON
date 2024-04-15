@@ -7,8 +7,8 @@ from sklearn.preprocessing import normalize
 
 import json
 
-import matplotlib
-import matplotlib.pyplot as plt
+# import matplotlib
+# import matplotlib.pyplot as plt
 
 
 def review_svd(programs_df, query, k_value = 100):

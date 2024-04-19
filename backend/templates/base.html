@@ -29,11 +29,11 @@
                 </div>
                     <datalist id="gpas">
                         
-                    <!-- JavaScript loop to generate options with values from 1.00 to 4.00 -->
+                    <!-- JavaScript loop to generate options with values from 1.0 to 4.0 -->
                     <script>
                         const options = [];
-                        for (let i = 100; i <= 400; i++) {
-                          let gpaValue = (i / 100).toFixed(2); 
+                        for (let i = 10; i <= 40; i++) {
+                          let gpaValue = (i / 10).toFixed(1); 
                           options.push(gpaValue);
                         }
                         const inputField = document.getElementById('gpa');

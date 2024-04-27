@@ -91,6 +91,8 @@ def rank_program_results(
         
         program_tokens = row['tokens']
 
+        program_url = row['url']
+
         name_edit_distances = [
             edit_distance(query_token, program_token, insertion_cost, deletion_cost, substitution_cost)
             for query_token in query_tokens
@@ -149,15 +151,15 @@ def rank_program_results(
 
         print(program_name, name_score, location_score, token_score, score)
 
-        rankings.append((index, score, program_name, program_location))
+        rankings.append((index, score, program_name, program_location, program_url))
         
     rankings.sort(key=lambda x: x[1], reverse=True)
     l = min(len(rankings), MAX_RESULTS)
     rankings = rankings[:l]
 
     json_data = [
-    {"id": id, "program": program_name, "program_location": program_location}
-    for id, score, program_name, program_location in rankings]
+    {"id": id, "program": program_name, "program_location": program_location, "url": program_url}
+    for id, score, program_name, program_location, program_url in rankings]
 
     json_string = json.dumps(json_data, indent=2)
 

@@ -71,50 +71,102 @@ def edit_distance(
     edit_matrix = edit_matrix_func(query, message, ins_cost_func, del_cost_func, sub_cost_func)
       
     edit_distance = edit_matrix[(len(query),len(message))]
-        
+
     return edit_distance
 
-
-def rank_edit_distance_search(
+def rank_program_results(
     query: str,
-    ins_cost_func: int,
-    del_cost_func: int,
-    sub_cost_func: int,
 ):
     rankings = []
+
+    query_tokens = tokenize(query)
     
     for index, row in programs_df.iterrows():
         
         program_name = row['program']
-        program_location = row['location']
-        program_reviews = row['reviews']
-        
-        program_info = []
-        program_info.append(program_name)
-        program_info.append(program_location)
-        program_info += program_reviews
-        
-        for i in program_info:
-            ed = edit_distance(query, i, ins_cost_func, del_cost_func, sub_cost_func)
-            rankings.append((index, ed, program_name, program_location))
+        program_name_tokens = tokenize(program_name)
 
-    rankings.sort(key=lambda x: x[1])
-    print("Rankings:", rankings)
+        program_location = row['location']
+        program_location_tokens = tokenize(program_location)
+        
+        program_tokens = row['tokens']
+
+        name_edit_distances = [
+            edit_distance(query_token, program_token, insertion_cost, deletion_cost, substitution_cost)
+            for query_token in query_tokens
+            for program_token in program_name_tokens
+        ]
+        name_edit_distance = min(name_edit_distances)
+
+        max_name_distance = max(len(query_tokens), len(program_name_tokens))
+        normalized_name_edit_distance = name_edit_distance / max_name_distance
+
+        name_jaccard = jaccard(query, program_name)
+        name_score = max((1-normalized_name_edit_distance), name_jaccard)
+
+        location_edit_distances = [
+            edit_distance(query_token, location_token, insertion_cost, deletion_cost, substitution_cost)
+            for query_token in query_tokens
+            for location_token in program_location_tokens
+        ]
+        location_edit_distance = min(location_edit_distances)
+        
+        location_jaccard = jaccard(query, program_location)
+
+        max_location_distance = max(len(query_tokens), len(program_location_tokens))
+        normalized_location_edit_distance = location_edit_distance / max_location_distance
+        location_score = max((1-normalized_location_edit_distance), location_jaccard)
+
+        
+        token_edit_distances = [
+            edit_distance(query_token, program_token, insertion_cost, deletion_cost, substitution_cost)
+            for query_token in query_tokens
+            for program_token in program_tokens
+        ]
+        
+
+        max_token_distance = max(len(query_tokens), len(program_tokens))
+
+        
+        if token_edit_distances:
+            token_edit_distance = min(token_edit_distances)
+        else:
+            token_edit_distance = max_token_distance
+
+        normalized_token_edit_distance = token_edit_distance / max_token_distance
+        token_score = 1 - normalized_token_edit_distance
+        
+
+        name_weight = 0.4
+        location_weight = 0.55
+        token_weight = 0.05
+
+        
+        score = (name_weight * name_score +
+                 location_weight * location_score + 
+                 token_weight * token_score)
+        
+
+        print(program_name, name_score, location_score, token_score, score)
+
+        rankings.append((index, score, program_name, program_location))
+        
+    rankings.sort(key=lambda x: x[1], reverse=True)
     l = min(len(rankings), MAX_RESULTS)
     rankings = rankings[:l]
 
     json_data = [
     {"id": id, "program": program_name, "program_location": program_location}
-    for id, ed, program_name, program_location in rankings]
+    for id, score, program_name, program_location in rankings]
 
     json_string = json.dumps(json_data, indent=2)
 
     return json_string
-    
-    
-    
+      
 
 def jaccard(s1, s2):
+    s1 = tokenize(s1)
+    s2 = tokenize(s2)
     if len(s1) == 0 or len(s2) == 0:
         return 0 
     intersection = len(s1.intersection(s2))
@@ -130,7 +182,6 @@ def tokenize(text):
 def rank_programs_jaccard(query):
     query_words = tokenize(query)
     rankings = []
-    print(query)
     for index, row in programs_df.iterrows():
         
         program_name = row['program']
@@ -154,13 +205,6 @@ def rank_programs_jaccard(query):
 
     return json_string
 
-
-# def rank_programs_svd(query):
-
-#     review_svd_json_string = review_svd(programs_df, query)
-#     return review_svd_json_string
-
-
 @app.route("/")
 def home():
     return render_template('base.html',title="sample html")
@@ -168,20 +212,7 @@ def home():
 @app.route("/search_programs")
 def search():
     text = request.args.get("title")
-    return rank_edit_distance_search(text, insertion_cost, deletion_cost, substitution_cost)
-
-
-#Old Method Using Jaccard
-# @app.route("/search_programs")
-# def search():
-    
-#     text = request.args.get("title")
-#     return rank_programs_jaccard(text)
-
-# @app.route("/search_programs")
-# def search():
-#     text = request.args.get("title")
-#     return rank_programs_svd(text)
+    return rank_program_results(text)
 
 if 'DB_NAME' not in os.environ:
     app.run(debug=True,host="0.0.0.0",port=5000)

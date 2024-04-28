@@ -281,7 +281,8 @@ def search():
     # print("location", location)
     flexible = request.args.get("flexible")
     rank = rank_program_results(text)
-    filtered = filtering(rank, min_gpa, college, location, flexible)
+    sent_rank = sentiment_ranking(text, rank)
+    filtered = filtering(sent_rank, min_gpa, college, location, flexible)
     return filtered
 
 

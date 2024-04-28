@@ -343,7 +343,7 @@
     };
 }
 
-const debouncedFilterText = debounce(filterText, 250); 
+const debouncedFilterText = debounce(filterText, 200); 
 
 document.getElementById('filter-text-val').addEventListener('input', debouncedFilterText);
 

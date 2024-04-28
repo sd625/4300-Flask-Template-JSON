@@ -92,67 +92,69 @@ def rank_program_results(
         program_tokens = row['tokens']
 
         program_url = row['url']
-
-        name_edit_distances = [
-            edit_distance(query_token, program_token, insertion_cost, deletion_cost, substitution_cost)
-            for query_token in query_tokens
-            for program_token in program_name_tokens
-        ]
-        name_edit_distance = min(name_edit_distances)
-
-        max_name_distance = max(len(query_tokens), len(program_name_tokens))
-        normalized_name_edit_distance = name_edit_distance / max_name_distance
-
-        name_jaccard = jaccard(query, program_name)
-        name_score = max((1-normalized_name_edit_distance), name_jaccard)
-
-        location_edit_distances = [
-            edit_distance(query_token, location_token, insertion_cost, deletion_cost, substitution_cost)
-            for query_token in query_tokens
-            for location_token in program_location_tokens
-        ]
-        location_edit_distance = min(location_edit_distances)
-        
-        location_jaccard = jaccard(query, program_location)
-
-        max_location_distance = max(len(query_tokens), len(program_location_tokens))
-        normalized_location_edit_distance = location_edit_distance / max_location_distance
-        location_score = max((1-normalized_location_edit_distance), location_jaccard)
-
-        
-        token_edit_distances = [
-            edit_distance(query_token, program_token, insertion_cost, deletion_cost, substitution_cost)
-            for query_token in query_tokens
-            for program_token in program_tokens
-        ]
-        
-
-        max_token_distance = max(len(query_tokens), len(program_tokens))
-
-        
-        if token_edit_distances:
-            token_edit_distance = min(token_edit_distances)
+        # if query is empty, return programs in alphabetical order
+        if query == "":
+            rankings.append((index, -1, program_name, program_location, program_url))
         else:
-            token_edit_distance = max_token_distance
+            name_edit_distances = [
+                edit_distance(query_token, program_token, insertion_cost, deletion_cost, substitution_cost)
+                for query_token in query_tokens
+                for program_token in program_name_tokens
+            ]
+            name_edit_distance = min(name_edit_distances)
 
-        normalized_token_edit_distance = token_edit_distance / max_token_distance
-        token_score = 1 - normalized_token_edit_distance
-        
+            max_name_distance = max(len(query_tokens), len(program_name_tokens))
+            normalized_name_edit_distance = name_edit_distance / max_name_distance
+            name_jaccard = jaccard(query_tokens, program_name_tokens)
+            name_score = max((1-normalized_name_edit_distance), name_jaccard)
 
-        name_weight = 0.4
-        location_weight = 0.55
-        token_weight = 0.05
+            location_edit_distances = [
+                edit_distance(query_token, location_token, insertion_cost, deletion_cost, substitution_cost)
+                for query_token in query_tokens
+                for location_token in program_location_tokens
+            ]
+            location_edit_distance = min(location_edit_distances)
+            
+            location_jaccard = jaccard(query_tokens, program_location_tokens)
 
-        
-        score = (name_weight * name_score +
-                 location_weight * location_score + 
-                 token_weight * token_score)
-        
+            max_location_distance = max(len(query_tokens), len(program_location_tokens))
+            normalized_location_edit_distance = location_edit_distance / max_location_distance
+            location_score = max((1-normalized_location_edit_distance), location_jaccard)
 
-        print(program_name, name_score, location_score, token_score, score)
+            
+            token_edit_distances = [
+                edit_distance(query_token, program_token, insertion_cost, deletion_cost, substitution_cost)
+                for query_token in query_tokens
+                for program_token in program_tokens
+            ]
+            
 
-        rankings.append((index, score, program_name, program_location, program_url))
-        
+            max_token_distance = max(len(query_tokens), len(program_tokens))
+
+            
+            if token_edit_distances:
+                token_edit_distance = min(token_edit_distances)
+            else:
+                token_edit_distance = max_token_distance
+
+            normalized_token_edit_distance = token_edit_distance / max_token_distance
+            token_score = 1 - normalized_token_edit_distance
+            
+
+            name_weight = 0.4
+            location_weight = 0.55
+            token_weight = 0.05
+
+            
+            score = (name_weight * name_score +
+                    location_weight * location_score + 
+                    token_weight * token_score)
+            
+
+            # print(program_name, name_score, location_score, token_score, score)
+
+            rankings.append((index, score, program_name, program_location, program_url))
+            
     rankings.sort(key=lambda x: x[1], reverse=True)
     l = min(len(rankings), MAX_RESULTS)
     rankings = rankings[:l]
@@ -161,14 +163,15 @@ def rank_program_results(
     {"id": id, "program": program_name, "program_location": program_location, "url": program_url}
     for id, score, program_name, program_location, program_url in rankings]
 
-    json_string = json.dumps(json_data, indent=2)
+    # json_string = json.dumps(json_data, indent=2)
 
-    return json_string
+    # return json_string
+    return json_data
       
 
 def jaccard(s1, s2):
-    s1 = tokenize(s1)
-    s2 = tokenize(s2)
+    # s1 = tokenize(s1)
+    # s2 = tokenize(s2)
     if len(s1) == 0 or len(s2) == 0:
         return 0 
     intersection = len(s1.intersection(s2))
@@ -177,6 +180,7 @@ def jaccard(s1, s2):
     return jaccard
 
 def tokenize(text):
+    # print(type(text))
     text = text.lower()
     words = re.findall("[a-zA-Z]+", text)
     return set(words)
@@ -200,12 +204,67 @@ def rank_programs_jaccard(query):
     rankings = rankings[:l]
 
     json_data = [
-    {"id": id, "program": program_name, "program_location": program_location}
-    for id, _, program_name, program_location in rankings]
+    {"id": id, "program": program_name, "program_location": program_location, "url": program_url}
+    for id, _, program_name, program_location, program_url in rankings]
 
     json_string = json.dumps(json_data, indent=2)
 
     return json_string
+
+def filtering(search, gpa="", college="", location="", flexible=True):
+    filtered_list = []
+    for program in search:
+        #print(program['program_location'])
+        sims = []
+
+        if location != "":
+            # print("location was entered")
+            # print(type(location))
+            loc__filter_toks = tokenize(location)
+            prog_loc_toks = tokenize(program['program_location'])
+            loc_sim = jaccard(prog_loc_toks, loc__filter_toks)
+            sims.append(loc_sim)
+
+            #note: issue with united kingdom for some reason, figure out why
+
+        # if college != "":
+        #     college__filter_toks = tokenize(college)
+        #     prog_college_toks = tokenize(program['college'])
+        #     college_sim = jaccard(prog_loc_toks, loc__filter_toks)
+        #     sims.append(college_sim)
+
+        # if gpa != "":
+        #     gpa__filter_toks = tokenize(gpa)
+        #     prog_gpa_toks = tokenize(program['gpa'])
+        #     gpa_sim = jaccard(prog_loc_toks, loc__filter_toks)
+        #     sims.append(gpa_sim)
+
+        # if department != "":
+        #     dept__filter_toks = tokenize(department)
+        #     prog_dept_toks = tokenize(program['department'])
+        #     dept_sim = jaccard(prog_dept_toks, dept__filter_toks)
+        #     sims.append(dept_sim)
+    
+        if not flexible:
+            #print("flexible")
+            if any(sims):
+                filtered_list.append(program)
+        if flexible:
+            #print("not flexible")
+            if all(sims):
+                filtered_list.append(program)
+    if len(sims) == 0:
+        #print("no filters chosen")
+        #print("sims", sims)
+        filtered_list = search
+    # print(filtered_list)
+    # print(sims)
+
+    #print("len filtered", len(filtered_list))
+    json_string = json.dumps(filtered_list, indent=2)
+    # print(json_string)
+    return json_string
+
 
 @app.route("/")
 def home():
@@ -214,7 +273,17 @@ def home():
 @app.route("/search_programs")
 def search():
     text = request.args.get("title")
-    return rank_program_results(text)
+    min_gpa = request.args.get("gpa")
+    college = request.args.get("college")
+    location = request.args.get("location")
+    # print("type", type(location))
+    # print("location", location)
+    flexible = request.args.get("flexible")
+    rank = rank_program_results(text)
+    filtered = filtering(rank, min_gpa, college, location, flexible)
+    return filtered
+
+
 
 if 'DB_NAME' not in os.environ:
     app.run(debug=True,host="0.0.0.0",port=5000)

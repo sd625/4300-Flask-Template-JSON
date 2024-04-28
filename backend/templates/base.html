@@ -3,51 +3,53 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
+    rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 
 <body>
     <header>
-            <h1 >Global Ed Quest</h1>
+        <h1>Global Ed Quest</h1>
     </header>
- 
-        <p class = "slogan"> Your Academic Destination Awaits ✈️ </p>
-       
-        <div class = "search centered">
-            <div class="input-box" onclick="sendFocus()">
-                <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                <input placeholder="Search for a Study Abroad Program" id="filter-text-val" onkeyup="filterText()"/>
-            </div>
+
+    <p class="slogan"> Your Academic Destination Awaits ✈️ </p>
+
+    <div class="search centered">
+        <div class="input-box" onclick="sendFocus()">
+            <img src="{{ url_for('static', filename='images/mag.png') }}" />
+            <input placeholder="Search for a Study Abroad Program" id="filter-text-val" onkeyup="filterText()" />
         </div>
+    </div>
 
 
-  
-    <div class = "row">
 
-        <div class = "sidebar" class = "sidebar">
+    <div class="row">
+
+        <div class="sidebar" class="sidebar">
             <h2 class="sidebar-head">Filter by Preferences</h2>
 
-            <div class = "gpa">
+            <div class="gpa">
                 <h4 class="title"> Minimum GPA:</h4>
                 <div class="gpa-input-box centered">
-                        <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                        <input placeholder="e.g. 3.0" list="gpas" name="gpa" id="gpa" />
+                    <img src="{{ url_for('static', filename='images/mag.png') }}" />
+                    <input placeholder="e.g. 3.0" list="gpas" name="gpa" id="gpa" />
                 </div>
-                    <datalist id="gpas">
-                        <option value="1.0-1.5">1.0-1.5</option>
-                        <option value="1.5-2.0">1.5-2.0</option>
-                        <option value="2.0-2.5">2.0-2.5</option>
-                        <option value="2.5-3.0">2.5-3.0</option>
-                        <option value="3.0-3.5">3.0-3.5</option>
-                        <option value="3.5-4.0">3.5-4.0</option>  
-                    </datalist>
+                <datalist id="gpas">
+                    <option value="1.0-1.5">1.0-1.5</option>
+                    <option value="1.5-2.0">1.5-2.0</option>
+                    <option value="2.0-2.5">2.0-2.5</option>
+                    <option value="2.5-3.0">2.5-3.0</option>
+                    <option value="3.0-3.5">3.0-3.5</option>
+                    <option value="3.5-4.0">3.5-4.0</option>
+                </datalist>
             </div>
 
 
@@ -79,47 +81,53 @@
                     <input placeholder="e.g. College of Arts & Sciences" list="colleges" name="college" id="college" />
                 </div>
                 <datalist id="colleges">
-                    <option value="College of Agriculture and Life Sciences (CALS)">College of Agriculture and Life Sciences (CALS)</option>
-                    <option value="College of Architecture, Art, and Planning (AAP)">College of Architecture, Art, and Planning (AAP)</option>
+                    <option value="College of Agriculture and Life Sciences (CALS)">College of Agriculture and Life
+                        Sciences (CALS)</option>
+                    <option value="College of Architecture, Art, and Planning (AAP)">College of Architecture, Art, and
+                        Planning (AAP)</option>
                     <option value="College of Arts and Sciences (AS)">College of Arts and Sciences (AS)</option>
-                    <option value="Cornell SC Johnson College of Business">Cornell SC Johnson College of Business</option>
+                    <option value="Cornell SC Johnson College of Business">Cornell SC Johnson College of Business
+                    </option>
                     <option value="College of Engineering (ENG)">College of Engineering (ENG)</option>
                     <option value="College of Human Ecology (CHE)">College of Human Ecology (CHE)</option>
-                    <option value="Cornell Ann S. Bowers College of Computing and Information Science(CIS)">Cornell Ann S. Bowers College of Computing and Information Science(CIS)</option>
-                    <option value="School of Industrial and Labor Relations(ILR)">School of Industrial and Labor Relations (ILR)</option>
-                    <option value="Cornell Jeb E. Brooks School of Public Policy">Cornell Jeb E. Brooks School of Public Policy</option>
+                    <option value="Cornell Ann S. Bowers College of Computing and Information Science(CIS)">Cornell Ann
+                        S. Bowers College of Computing and Information Science(CIS)</option>
+                    <option value="School of Industrial and Labor Relations(ILR)">School of Industrial and Labor
+                        Relations (ILR)</option>
+                    <option value="Cornell Jeb E. Brooks School of Public Policy">Cornell Jeb E. Brooks School of Public
+                        Policy</option>
                 </datalist>
             </div>
-          
+
             <div>
                 <h4 class="title">Filter by Location(s):</h4>
-                <div class = "location">
-                <select id="locations" name="locations[]" multiple placeholder="Select locations" >
-                    <option value="Hungary">Hungary</option>
-                    <option value="France">France</option>
-                    <option value="India">India</option>
-                    <option value="Germany">Germany</option>
-                    <option value="Italy">Italy</option>
-                    <option value="Switzerland">Switzerland</option>
-                    <option value="Australia">Australia</option>
-                    <option value="Spain">Spain</option>
-                    <option value="Cuba">Cuba</option>
-                    <option value="Ireland">Ireland</option>
-                    <option value="Chile">Chile</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="China">China</option>
-                    <option value="Jordan">Jordan</option>
-                    <option value="Czechia">Czechia</option>
-                    <option value="Thailand">Thailand</option>
-                    <option value="Netherlands">Netherlands</option>
-                    <option value="South Africa">South Africa</option>
-                    <option value="Hong Kong">Hong Kong</option>
-                    <option value="Greece">Greece</option>
-                    <option value="Denmark">Denmark</option>
-                    <option value="Ecuador">Ecuador</option>
-                    <option value="Cambodia">Cambodia</option>
-                </select>
-            </div>
+                <div class="location">
+                    <select id="locations" name="locations[]" multiple placeholder="Select locations">
+                        <option value="Hungary">Hungary</option>
+                        <option value="France">France</option>
+                        <option value="India">India</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Italy">Italy</option>
+                        <option value="Switzerland">Switzerland</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Spain">Spain</option>
+                        <option value="Cuba">Cuba</option>
+                        <option value="Ireland">Ireland</option>
+                        <option value="Chile">Chile</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="China">China</option>
+                        <option value="Jordan">Jordan</option>
+                        <option value="Czechia">Czechia</option>
+                        <option value="Thailand">Thailand</option>
+                        <option value="Netherlands">Netherlands</option>
+                        <option value="South Africa">South Africa</option>
+                        <option value="Hong Kong">Hong Kong</option>
+                        <option value="Greece">Greece</option>
+                        <option value="Denmark">Denmark</option>
+                        <option value="Ecuador">Ecuador</option>
+                        <option value="Cambodia">Cambodia</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Creates a multiselect option for the location dropdown -->
@@ -135,10 +143,10 @@
             
             </script> -->
             <script>
-                document.getElementById('locations').addEventListener('click', function() {
+                document.getElementById('locations').addEventListener('click', function () {
                     this.classList.toggle('open'); // Toggles the 'open' class to show/hide the dropdown
                 });
-            
+
                 // Initialize TomSelect with adjusted settings
                 new TomSelect('#locations', {
                     create: false,
@@ -147,37 +155,39 @@
                     hideSelected: true,
                     closeAfterSelect: true,
                     maxItems: null,
-                    onDropdownOpen: function() {
+                    onDropdownOpen: function () {
                         document.getElementById('locations').classList.add('open');
                     },
-                    onDropdownClose: function() {
+                    onDropdownClose: function () {
                         document.getElementById('locations').classList.remove('open');
                     }
                 });
             </script>
-            
 
-             <div class="flexible prow">
-                    <h4 class="title">Are Your Preferences Flexible?</h4>
-                    <div class="flexibility-checkboxes">
-                        <label class = "checkbox"><input type="checkbox" name="flexible" value="True"> </label><br>
-                    </div>
-            </div> 
-              
+
+            <div class="flexible prow">
+                <h4 class="title">Are Your Preferences Flexible?</h4>
+                <div class="flexibility-checkboxes">
+                    <label class="checkbox"><input type="checkbox" name="flexible" id="flexible" value="True">
+                    </label><br>
+                </div>
+            </div>
+
             <button id="submit">SUBMIT</button>
 
             <script>
-                document.getElementById('submit').addEventListener('click', function() {
+                document.getElementById('submit').addEventListener('click', function () {
+                    filterText();
                     const inputs = document.querySelectorAll('input');
                     const locs = document.getElementById('locations');
                     const formData = {};
                     inputs.forEach(input => {
                         if (input.type === "checkbox") {
-                             formData[input.name] = input.checked;
-                        } else{
+                            formData[input.name] = input.checked;
+                        } else {
                             formData[input.name] = input.value;
                         }
-                        });
+                    });
                     formData['locations'] = [];
 
                     Array.from(locs.options).forEach(option => {
@@ -191,16 +201,16 @@
 
 
             </script>
-            
+
         </div>
 
-        <div id="answer-box"  > </div>
-        
+        <div id="answer-box"> </div>
+
     </div>
-        
+
     <script>
-                        //         <!-- UPDATE THE FOLLOWING WITH CHANGES TO DATABASE  -->
-                        // <!-- IMPLEMENT FOR EACH LOOP FOR EACH REVIEW   -->
+        //         <!-- UPDATE THE FOLLOWING WITH CHANGES TO DATABASE  -->
+        // <!-- IMPLEMENT FOR EACH LOOP FOR EACH REVIEW   -->
         function answerBoxTemplate(program_name, program_location) {
             return `<a href = "https://www.studyabroad101.com/universities/cornell-university">
                 <div class='answer'>
@@ -243,7 +253,7 @@
             
             </div>
         </a> `
-            
+
         }
 
         function sendFocus() {
@@ -253,7 +263,21 @@
         function filterText() {
             document.getElementById("answer-box").innerHTML = ""
             console.log(document.getElementById("filter-text-val").value)
-            fetch("/search_programs?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
+            const title = document.getElementById("filter-text-val").value;
+            const gpa = document.getElementById('gpa').value;
+            const college = document.getElementById('college').value;
+            const locations = [];
+            const locs = document.getElementById('locations');
+
+            Array.from(locs.options).forEach(option => {
+                if (option.selected) {
+                    locations.push(option.value);
+                }
+            });
+            // const location = document.getElementById('locations').value;
+            // const department = document.getElementById('major').value;
+            const flexible = document.getElementById('flexible').checked;
+            fetch("/search_programs?" + new URLSearchParams({ title: title, gpa: gpa, college: college, location: locations, flexible: flexible }).toString())
                 .then((response) => response.json())
                 .then((data) => data.forEach(row => {
 

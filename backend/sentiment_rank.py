@@ -63,9 +63,9 @@ def sentiment_ranking(
             "id": id,
             "program": program_name,
             "program_location": program_location,
-            # "program_url": url,
+            "url": program_url,
         }
-        for id, _, program_name, program_location in ranked
+        for id, _, program_name, program_location, program_url in ranked
     ]
 
     return json_data

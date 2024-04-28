@@ -39,10 +39,11 @@ program_rating = {
 
 def sentiment_ranking(
     query,
-    filtered_programs,  # programs from ranked_programs
+    filtered_programs,  # programs from edit distance
     vectorizer=vectorizer,
     classifier=nb_classifier,
 ):
+    if query == "": return filtered_programs
     q_vec = vectorizer.transform([query])
     q_rating = classifier.predict(q_vec)[0]
     rating_diff = []

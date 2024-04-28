@@ -8,6 +8,7 @@ import numpy as np
 import re
 
 from svd import *
+from sentiment_rank import *
 
 #number of results on one page
 MAX_RESULTS = 20

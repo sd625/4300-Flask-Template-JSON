@@ -39,7 +39,7 @@ program_rating = {
 
 def sentiment_ranking(
     query,
-    filtered_programs,  # programs from ranked_edit_distance
+    filtered_programs,  # programs from ranked_programs
     vectorizer=vectorizer,
     classifier=nb_classifier,
 ):
@@ -57,7 +57,7 @@ def sentiment_ranking(
     # return programs listed in ranked order
     ranked = [pair[1] for pair in sorted_pairs]
 
-    # create json string
+    # create json data
     json_data = [
         {
             "id": id,
@@ -67,7 +67,5 @@ def sentiment_ranking(
         }
         for id, _, program_name, program_location in ranked
     ]
-
-    json_string = json.dumps(json_data, indent=2)
 
     return json_data

@@ -33,7 +33,7 @@ nb_report = classification_report(y_test, nb_pred)
 # program and median rating
 group = data.groupby("program")["review_rating"].median()
 program_rating = {
-    f"{name}_{i}": rating for i, (name, rating) in enumerate(group.items())
+    f"{name}": rating for i, (name, rating) in enumerate(group.items())
 }
 
 
@@ -64,6 +64,7 @@ def sentiment_ranking(
             "program": program_name,
             "program_location": program_location,
             "url": program_url,
+            "rating" : program_rating[program_name]
         }
         for id, _, program_name, program_location, program_url in ranked
     ]

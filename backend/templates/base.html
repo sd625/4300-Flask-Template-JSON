@@ -211,8 +211,9 @@
     <script>
         //         <!-- UPDATE THE FOLLOWING WITH CHANGES TO DATABASE  -->
         // <!-- IMPLEMENT FOR EACH LOOP FOR EACH REVIEW   -->
-        function answerBoxTemplate(program_name, program_location) {
-            return `<a href = "https://www.studyabroad101.com/universities/cornell-university">
+        function answerBoxTemplate(program_name, program_location, program_url) {
+            if (program_url){
+                return `<a href = ${program_url}>
                 <div class='answer'>
                 <h3 class='program-name'>${program_name}</h3>
                 <hr>
@@ -254,6 +255,52 @@
             </div>
         </a> `
 
+            } else {
+                
+                return `
+                <div class='answer'>
+                <h3 class='program-name'>${program_name}</h3>
+                <hr>
+                <div class = "centered prow">
+                    <span class="material-symbols-outlined star">star star star star</span>
+                </div>
+                
+                <div class = "row">
+                        <div class = "prow">   
+                            <div class = "row-inner">  
+                                <h3 class='program-details'> Location </h3> 
+                                <span class="material-symbols-outlined">location_on</span>
+                                <h3 class='program-details'>: </h3> 
+                            </div>
+                            <div class = "program-location program-buttons">${program_location}</div>
+             
+                            <div class = "row-inner">  
+                                <h3 class='program-details'> Minimum  </h3>
+                                <h3 class='program-details'>GPA </h3> 
+                                <span class="material-symbols-outlined">person</span>
+                                <h3 class='program-details'>: </h3> 
+                            </div>
+                            <div class = "program-gpa program-buttons">3.0</div>
+                        </div>
+                </div>
+
+                <div class = "prow">   
+                            <div class = "row-inner">  
+                                <h3 class='program-details'> Approved </h3> 
+                                <h3 class='program-details'>Colleges </h3> 
+                                <span class="material-symbols-outlined">school</span>
+                                <h3 class='program-details'>: </h3> 
+                            </div>
+                            <div class = "program-college program-buttons">College of Engineering</div>
+                            <div class = "program-college program-buttons">College of Arts & Sciences</div>
+                            <div class = "program-college program-buttons">College of Agriculture</div>
+                </div>
+            
+            </div>
+        `
+            }
+           
+
         }
 
         function sendFocus() {
@@ -282,7 +329,7 @@
                 .then((data) => data.forEach(row => {
 
                     let tempDiv = document.createElement("div")
-                    tempDiv.innerHTML = answerBoxTemplate(row.program, row.program_location)
+                    tempDiv.innerHTML = answerBoxTemplate(row.program, row.program_location, row.url)
                     document.getElementById("answer-box").appendChild(tempDiv)
                 }));
 

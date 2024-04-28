@@ -142,7 +142,7 @@ hr {
 
 .answer{
     background-color: white;
-    width: 90%;
+    width: 100%;
     height: 100%;
     margin-left:auto;
     margin-right:auto;
@@ -151,6 +151,12 @@ hr {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 2%;
+}
+
+#answer-box{
+    width: 60%;
+    margin-left:20px;
+    margin-right:0px;
 }
 
 .answer:hover{
@@ -229,12 +235,12 @@ hr {
     margin-left: 10px; 
     border: 2px solid #000000;
     border-radius: 8px;
-    margin-right: 5px; 
-   background-color: white;
+    margin-right: 10px; 
+    background-color: white;
     align-items: center;
-
+    width: 32%;
+    align-content: center;
     text-align: center;
-
 }
 
 .search{
@@ -247,7 +253,6 @@ hr {
     margin-top:0%;
     padding: 0;
     margin-bottom: 2%;
-    
 }
 
 

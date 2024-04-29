@@ -207,9 +207,30 @@
     </div>
 
     <script>
-        //         <!-- UPDATE THE FOLLOWING WITH CHANGES TO DATABASE  -->
-        // <!-- IMPLEMENT FOR EACH LOOP FOR EACH REVIEW   -->
-        function answerBoxTemplate(program_name, program_location, program_url) {
+        function answerBoxTemplate(program_name, program_location, program_url, program_gpa, program_colleges) {
+            let colleges = program_colleges.split(',');
+    let collegesHTML = "";
+    let rowOpen = false;  // Track if a row div is open
+
+    for (let i = 0; i < colleges.length; i++) {
+        if (i % 4 === 0) { 
+            if (rowOpen) {
+                collegesHTML += `</div>`;  
+            }
+            collegesHTML += `<div class="row3">`;  
+            rowOpen = true;
+        }
+        collegesHTML += `<div class="program-college program-buttons">${colleges[i].trim()}</div>`;
+    }
+
+    if (rowOpen) {
+        collegesHTML += `</div>`;  
+        rowOpen = false;
+    }
+
+    if (program_gpa == -1){
+        program_gpa = "None"
+    }
             if (program_url) {
                 return `<a href = ${program_url}>
                 <div class='answer'>
@@ -234,7 +255,7 @@
                                 <span class="material-symbols-outlined">person</span>
                                 <h3 class='program-details'>: </h3> 
                             </div>
-                            <div class = "program-gpa program-buttons">3.0</div>
+                            <div class = "program-gpa program-buttons">${program_gpa}</div>
                         </div>
                 </div>
 
@@ -245,9 +266,10 @@
                                 <span class="material-symbols-outlined">school</span>
                                 <h3 class='program-details'>: </h3> 
                             </div>
-                            <div class = "program-college program-buttons">College of Engineering</div>
-                            <div class = "program-college program-buttons">College of Arts & Sciences</div>
-                            <div class = "program-college program-buttons">College of Agriculture</div>
+                         
+                </div>
+                <div>
+                    ${collegesHTML} 
                 </div>
             
             </div>
@@ -255,7 +277,7 @@
 
             } else {
 
-                return `
+                return ` </a href = "https://www.studyabroad101.com/"> 
                 <div class='answer'>
                 <h3 class='program-name'>${program_name}</h3>
                 <hr>
@@ -278,7 +300,7 @@
                                 <span class="material-symbols-outlined">person</span>
                                 <h3 class='program-details'>: </h3> 
                             </div>
-                            <div class = "program-gpa program-buttons">3.0</div>
+                            <div class = "program-gpa program-buttons">${program_gpa}</div>
                         </div>
                 </div>
 
@@ -289,12 +311,10 @@
                                 <span class="material-symbols-outlined">school</span>
                                 <h3 class='program-details'>: </h3> 
                             </div>
-                            <div class = "program-college program-buttons">College of Engineering</div>
-                            <div class = "program-college program-buttons">College of Arts & Sciences</div>
-                            <div class = "program-college program-buttons">College of Agriculture</div>
+                            ${collegesHTML} 
                 </div>
-            
             </div>
+        </a> 
         `
             }
 
@@ -327,7 +347,7 @@
                 .then((data) => data.forEach(row => {
 
                     let tempDiv = document.createElement("div")
-                    tempDiv.innerHTML = answerBoxTemplate(row.program, row.program_location, row.url)
+                    tempDiv.innerHTML = answerBoxTemplate(row.program, row.program_location, row.url, row.gpa, row.colleges)
                     document.getElementById("answer-box").appendChild(tempDiv)
                 }));
 

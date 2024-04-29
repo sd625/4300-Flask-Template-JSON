@@ -146,7 +146,7 @@ hr {
     height: 100%;
     margin-left:auto;
     margin-right:auto;
-    padding: 0;
+    padding: 10px;
     border: 2px solid #000000;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -198,7 +198,12 @@ hr {
 .program-college {
     background-color: #11b041;
     color: white; 
-    /* font-size: 15px; */
+    width:  20%;         
+    margin: 3px;            
+    text-align: center;     
+    padding: 10px;     
+    font-size: 12px;    
+
 
 }
 .program-gpa{
@@ -368,5 +373,12 @@ button:hover {
     background-color: white; /* Non-transparent background */
     z-index: 1000; /* Makes sure it is on top of other content */
 
+}
+
+.row3{
+    display: flex;     
+    align-content: center;
+    align-items: center;
+    justify-content: center;
 }
 

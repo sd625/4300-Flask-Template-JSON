@@ -205,7 +205,12 @@
     </div>
 
     <script>
-        function answerBoxTemplate(program_name, program_location, program_url, program_gpa, program_colleges) {
+        function answerBoxTemplate(program_name, program_location, program_url, program_gpa, program_colleges, program_rate) {
+            let numStars = "";
+            for (let i = 0; i < Math.floor(program_rate); i++) {
+                numStars += `star `;  
+            }
+
             let colleges = program_colleges.split(',');
             let collegesHTML = "";
             let rowOpen = false; 
@@ -233,13 +238,22 @@
         if (program_gpa == -1){
             program_gpa = "None"
         }
-            if (program_url) {
+        if (!program_url) {
+                program_url = "https://www.studyabroad101.com/"
+        }
                 return `<a href = ${program_url} target="_blank">
                 <div class='answer'>
                 <h3 class='program-name'>${program_name}</h3>
                 <hr>
-                <div class = "centered prow">
-                    <span class="material-symbols-outlined star">star star star star</span>
+                <div class = "prow">   
+                            <div class = "row-inner">  
+                                <h3 class='program-details'> Rating: </h3> 
+                            </div>
+                            <div class = "program-rate program-buttons">${program_rate}</div>
+                </div>
+
+                <div class = "prow">
+                    <span class="material-symbols-outlined star">${numStars}</span>
                 </div>
                 
                 <div class = "row">
@@ -277,53 +291,7 @@
             </div>
         </a> `
 
-            } else {
-
-                return ` </a href = "https://www.studyabroad101.com/" target="_blank"> 
-                <div class='answer'>
-                <h3 class='program-name'>${program_name}</h3>
-                <hr>
-                <div class = "centered prow">
-                    <span class="material-symbols-outlined star">star star star star</span>
-                </div>
-                
-                <div class = "row">
-                        <div class = "prow">   
-                            <div class = "row-inner">  
-                                <h3 class='program-details'> Location </h3> 
-                                <span class="material-symbols-outlined">location_on</span>
-                                <h3 class='program-details'>: </h3> 
-                            </div>
-                            <div class = "program-location program-buttons">${program_location}</div>
-             
-                            <div class = "row-inner">  
-                                <h3 class='program-details'> Minimum  </h3>
-                                <h3 class='program-details'>GPA </h3> 
-                                <span class="material-symbols-outlined">person</span>
-                                <h3 class='program-details'>: </h3> 
-                            </div>
-                            <div class = "program-gpa program-buttons">${program_gpa}</div>
-                        </div>
-                </div>
-
-                <div class = "prow">   
-                            <div class = "row-inner">  
-                                <h3 class='program-details'> Approved </h3> 
-                                <h3 class='program-details'>Colleges </h3> 
-                                <span class="material-symbols-outlined">school</span>
-                                <h3 class='program-details'>: </h3> 
-                        
-            </div>
-        </div>
-                            ${collegesHTML} 
-                </div>
-        </a> 
-        `
-            }
-
-
-        }
-
+    }
         function sendFocus() {
             document.getElementById('filter-text-val').focus()
         }
@@ -350,7 +318,7 @@
                 .then((data) => data.forEach(row => {
 
                     let tempDiv = document.createElement("div")
-                    tempDiv.innerHTML = answerBoxTemplate(row.program, row.program_location, row.url, row.gpa, row.colleges)
+                    tempDiv.innerHTML = answerBoxTemplate(row.program, row.program_location, row.url, row.gpa, row.colleges,row.rating)
                     document.getElementById("answer-box").appendChild(tempDiv)
                 }));
 

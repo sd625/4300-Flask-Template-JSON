@@ -169,6 +169,11 @@ hr {
     margin-bottom:2%;
 }
 
+.program-rate{
+    background-color: #000000;
+    color:white;
+}
+
 
 .program-details{
     font-family: 'Kanit', sans-serif;

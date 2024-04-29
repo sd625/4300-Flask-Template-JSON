@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.ensemble import RandomForestClassifier
 import json
 from sklearn.metrics import classification_report
 
@@ -43,9 +44,7 @@ rf_report = classification_report(y_test, rf_pred)
 
 # program and median rating
 group = data.groupby("program")["review_rating"].median()
-program_rating = {
-    f"{name}": rating for i, (name, rating) in enumerate(group.items())
-}
+program_rating = {f"{name}": rating for i, (name, rating) in enumerate(group.items())}
 
 
 def sentiment_ranking(

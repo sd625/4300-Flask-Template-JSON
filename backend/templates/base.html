@@ -88,9 +88,7 @@
                     </option>
                     <option value="College of Engineering (ENG)">College of Engineering (ENG)</option>
                     <option value="College of Human Ecology (CHE)">College of Human Ecology (CHE)</option>
-                    <option value="Cornell Ann S. Bowers College of Computing and Information Science(CIS)">Cornell Ann
-                        S. Bowers College of Computing and Information Science(CIS)</option>
-                    <option value="School of Industrial and Labor Relations(ILR)">School of Industrial and Labor
+                    <option value="School of Industrial and Labor Relations (ILR)">School of Industrial and Labor
                         Relations (ILR)</option>
                     <option value="Cornell Jeb E. Brooks School of Public Policy">Cornell Jeb E. Brooks School of Public
                         Policy</option>
@@ -209,28 +207,32 @@
     <script>
         function answerBoxTemplate(program_name, program_location, program_url, program_gpa, program_colleges) {
             let colleges = program_colleges.split(',');
-    let collegesHTML = "";
-    let rowOpen = false;  // Track if a row div is open
+            let collegesHTML = "";
+            let rowOpen = false; 
 
-    for (let i = 0; i < colleges.length; i++) {
-        if (i % 4 === 0) { 
-            if (rowOpen) {
-                collegesHTML += `</div>`;  
+             for (let i = 0; i < colleges.length; i++) {
+                //not empty
+                if (colleges[i].length > 0) {
+                    //4 college buttons in a row 
+                 if (i % 4 === 0) { 
+                    if (rowOpen) {
+                        collegesHTML += `</div>`;  
+                    }
+                    collegesHTML += `<div class="row3">`;  
+                    rowOpen = true;
+                }
+                collegesHTML += `<div class="program-college program-buttons">${colleges[i].trim()}</div>`;
             }
-            collegesHTML += `<div class="row3">`;  
-            rowOpen = true;
         }
-        collegesHTML += `<div class="program-college program-buttons">${colleges[i].trim()}</div>`;
-    }
+        if (rowOpen) {
+            collegesHTML += `</div>`;  
+            rowOpen = false;
+        }
+    
 
-    if (rowOpen) {
-        collegesHTML += `</div>`;  
-        rowOpen = false;
-    }
-
-    if (program_gpa == -1){
-        program_gpa = "None"
-    }
+        if (program_gpa == -1){
+            program_gpa = "None"
+        }
             if (program_url) {
                 return `<a href = ${program_url}>
                 <div class='answer'>
@@ -310,10 +312,11 @@
                                 <h3 class='program-details'>Colleges </h3> 
                                 <span class="material-symbols-outlined">school</span>
                                 <h3 class='program-details'>: </h3> 
-                            </div>
+                        
+            </div>
+        </div>
                             ${collegesHTML} 
                 </div>
-            </div>
         </a> 
         `
             }

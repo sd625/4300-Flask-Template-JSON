@@ -50,35 +50,36 @@ program_rating = {
 
 def sentiment_ranking(
     query,
-    filtered_programs,  # programs from edit distance
+    filtered_programs,  # from edit distance
     vectorizer=vectorizer,
     classifier=rf_classifier,
 ):
-    if query == "": return filtered_programs
     q_vec = vectorizer.transform([query])
     q_rating = classifier.predict(q_vec)[0]
     rating_diff = []
     for program in filtered_programs:
         name = program["program"]
-        diff = abs(q_rating - program_rating[name])
+        if name in program_rating:
+            r = program_rating[name]
+        else:
+            r = 0
+        diff = abs(q_rating - r)
         rating_diff.append(diff)
     # ranking
     pair = list(zip(filtered_programs, rating_diff))
-    sorted_pairs = sorted(pair, key=lambda x: x[0])
+    sorted_pairs = sorted(pair, key=lambda x: x[1])
 
     # return programs listed in ranked order
-    ranked = [pair[1] for pair in sorted_pairs]
-
+    ranked = [pair[0] for pair in sorted_pairs]
+    print(ranked[0])
     # create json data
-    json_data = [
-        {
-            "id": id,
-            "program": program_name,
-            "program_location": program_location,
-            "url": program_url,
-            "rating" : program_rating[program_name]
-        }
-        for id, _, program_name, program_location, program_url in ranked
-    ]
+    json_data = ranked.copy()
+    for program in json_data:
+        name = program["program"]
+        if name in program_rating:
+            r = program_rating[name]
+        else:
+            r = 0
+        program["rating"] = r
 
     return json_data

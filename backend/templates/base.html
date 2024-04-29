@@ -207,9 +207,14 @@
     <script>
         function answerBoxTemplate(program_name, program_location, program_url, program_gpa, program_colleges, program_rate) {
             let numStars = "";
-            for (let i = 0; i < Math.floor(program_rate); i++) {
-                numStars += `star `;  
+            if (program_rate==0){
+                program_rate = "No Rating"
+            }else{
+                for (let i = 0; i < Math.floor(program_rate); i++) {
+                    numStars += `star `;  
+                }
             }
+          
 
             let colleges = program_colleges.split(',');
             let collegesHTML = "";

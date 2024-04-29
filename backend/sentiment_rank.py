@@ -52,14 +52,17 @@ def sentiment_ranking(
     vectorizer=vectorizer,
     classifier=rf_classifier,
 ):
-    if query == "":
-        return filtered_programs
-
     def rating(name):
         if name in program_rating:
             return program_rating[name]
         else:
             return 0
+
+    if query == "":
+        json_data = filtered_programs.copy()
+        for program in json_data:
+            program["rating"] = rating(program["program"])
+        return json_data
 
     q_vec = vectorizer.transform([query])
     q_rating = classifier.predict(q_vec)[0]

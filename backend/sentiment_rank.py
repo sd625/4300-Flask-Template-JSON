@@ -36,7 +36,7 @@ nb_report = classification_report(y_test, nb_pred)
 rf_classifier = RandomForestClassifier()
 rf_classifier.fit(X_train_vectorized, y_train)
 
-# glance at rf accuracy
+# glance at rf accuracy (~67%)
 rf_pred = rf_classifier.predict(X_test_vectorized)
 rf_report = classification_report(y_test, rf_pred)
 
@@ -46,23 +46,32 @@ group = data.groupby("program")["review_rating"].median()
 program_rating = {f"{name}": rating for i, (name, rating) in enumerate(group.items())}
 
 
+# get program rating return 0 if program has no reviews
+def rating(name):
+    if name in program_rating:
+        return program_rating[name]
+    else:
+        return 0
+
+
+# create json data
+def create_json_data(program_dict):
+    json_data = program_dict.copy()
+    for program in json_data:
+        program_name = program["program"]
+        program["rating"] = rating(program_name)
+    return json_data
+
+
 def sentiment_ranking(
     query,
     filtered_programs,  # from edit distance
     vectorizer=vectorizer,
     classifier=rf_classifier,
 ):
-    def rating(name):
-        if name in program_rating:
-            return program_rating[name]
-        else:
-            return 0
 
     if query == "":
-        json_data = filtered_programs.copy()
-        for program in json_data:
-            program["rating"] = rating(program["program"])
-        return json_data
+        return create_json_data(filtered_programs)
 
     q_vec = vectorizer.transform([query])
     q_rating = classifier.predict(q_vec)[0]
@@ -77,10 +86,5 @@ def sentiment_ranking(
 
     # return programs listed in ranked order
     ranked = [pair[0] for pair in sorted_pairs]
-    print(ranked[0])
-    # create json data
-    json_data = ranked.copy()
-    for program in json_data:
-        program["rating"] = rating(program["program"])
 
-    return json_data
+    return create_json_data(ranked)

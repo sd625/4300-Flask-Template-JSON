@@ -122,8 +122,8 @@ hr {
     align-items: center;
     margin-top: 2%;
     padding:12px;
-    width: 400px;
-     background-color: white;
+    width: 90%;
+    background-color: white;
 
 }
 
@@ -165,7 +165,7 @@ hr {
 
 .program-name{
     font-family: 'Kanit', sans-serif;
-    font-size:30px;
+    font-size:25px;
     margin-bottom:2%;
 }
 
@@ -345,21 +345,21 @@ button:hover {
     align-items: center;
     margin-top: 2%;
     padding:12px;
-    width: 400px;
+    width: 90%;
     font-size: 16px;
     outline: 0;
 }
 
 
 #locations {
-    width: 100%; /* Full width */
-    height: 100vh; /* Full height of the viewport */
-    position: fixed; /* Fixed position to cover the whole screen */
+    width: 90%;
+    height: 100vh;
+    position: fixed;
     top: 0;
     left: 0;
-    background-color: white; /* Non-transparent background */
-    z-index: 1000; /* Makes sure it is on top of other content */
-    display: none; /* Hidden by default */
+    background-color: white; 
+    z-index: 1000;
+    display: none;
 }
 
 /* Style for the open state of the dropdown */

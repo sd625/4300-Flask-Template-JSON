@@ -48,7 +48,7 @@
             "program": "Berlin Consortium (BCGS) - English Program",
             "location": "Berlin, Germany",
             "url": "https://www.studyabroad101.com/programs/columbia-university-berlin-berlin-consortium-for-german-studies-bcgs-program",
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [
                 "got",
                 "independent",
@@ -1929,7 +1929,7 @@
             "program": "CASA Granada, Intensive Spanish Language",
             "location": "Granada, Spain",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nBrooks School of Public Policy,\nArchitecture, Art and Planning,\nEngineering,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -1937,7 +1937,7 @@
             "program": "CASA Granada, Spanish Language and Culture",
             "location": "Granada, Spain",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nBrooks School of Public Policy,\nArchitecture, Art and Planning,\nEngineering,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -7262,7 +7262,7 @@
             "program": "Cornell Prelaw Summer Program in Paris",
             "location": "Paris, France",
             "url": "https://www.studyabroad101.com/programs/cornell-university-law-school-paris-summer-institute",
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nBrooks School of Public Policy,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -7270,7 +7270,7 @@
             "program": "Cornell Spring Break Program in Ecuador - Culture, Communities, and Development",
             "location": "Quito, Ecuador",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nBrooks School of Public Policy,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -7278,7 +7278,7 @@
             "program": "Cornell Spring Break Program in London - Global Health and Environmental Justice",
             "location": "London, United Kingdom",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nBrooks School of Public Policy,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -7294,7 +7294,7 @@
             "program": "Cornell Summer Program in Turin - Public Policy",
             "location": "Turin, Italy",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -7302,7 +7302,7 @@
             "program": "Cornell Winter Program in Cambodia - Labor Development and Society",
             "location": "Krong Siem Reap and Phnom Penh, Cambodia",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -7310,7 +7310,7 @@
             "program": "Cornell Winter Program in Ecuador - Politics of Sustainable Development",
             "location": "Quito, Ecuador",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -7318,7 +7318,7 @@
             "program": "Cornell Winter Program in Mexico - Experiential Writing",
             "location": "Oaxaca, Mexico",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nBrooks School of Public Policy,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -7326,7 +7326,7 @@
             "program": "Cornell Winter Program in Zambia \u2013 History and Politics of Southern Africa",
             "location": "Lusaka, Zambia",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -7342,7 +7342,7 @@
             "program": "Cornell-Keystone NFLP Summer Program in India",
             "location": "India",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson,\nSC Johnson Business - Hotel"
         },
@@ -14884,7 +14884,7 @@
             "program": "SEA Semester: Climate & Society, Aotearoa",
             "location": "Auckland, New Zealand",
             "url": "https://www.studyabroad101.com/programs/sea-semester-programs-at-sea-climate-society",
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [
                 "biology",
                 "crashing",
@@ -14955,7 +14955,7 @@
             "program": "SEA Semester: Climate Change and Coastal Resilience",
             "location": "Auckland and Christchurch, New Zealand",
             "url": "https://www.studyabroad101.com/programs/sea-education-association-climate-change-coastal-resilience",
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson"
         },
@@ -14963,7 +14963,7 @@
             "program": "SEA Semester: Coral Reef Conservation, Caribbean",
             "location": "U.S. Virgin Islands, Anguilla, Dominica, Grenada",
             "url": null,
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [],
             "colleges": "Agriculture and Life Sciences,\nBrooks School of Public Policy,\nArchitecture, Art and Planning,\nEngineering,Arts and Sciences,\nHuman Ecology,\nIndustrial and Labor Relations,\nSC Johnson Business - Dyson"
         },
@@ -14971,7 +14971,7 @@
             "program": "SEA Semester: Marine Biodiversity & Conservation",
             "location": "Key West, FL, US",
             "url": "https://www.studyabroad101.com/programs/sea-semester-programs-at-sea-marine-biodiversity-conservation",
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [
                 "think",
                 "epiphanies",
@@ -15119,7 +15119,7 @@
             "program": "SEA Semester: Oceans & Climate",
             "location": "Stronvar, New Zealand",
             "url": "https://www.studyabroad101.com/programs/sea-semester-programs-at-sea-oceans-and-climate",
-            "gpa": null,
+            "gpa": -1.0,
             "tokens": [
                 "fisherwoman",
                 "got",

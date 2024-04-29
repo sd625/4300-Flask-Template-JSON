@@ -93,6 +93,9 @@ def rank_program_results(
         program_tokens = row['tokens']
 
         program_url = row['url']
+        program_gpa = row['gpa']
+        program_colleges = row['colleges']
+
         # if query is empty, return programs in alphabetical order
         if query == "":
             rankings.append((index, -1, program_name, program_location, program_url))
@@ -154,15 +157,15 @@ def rank_program_results(
 
             # print(program_name, name_score, location_score, token_score, score)
 
-            rankings.append((index, score, program_name, program_location, program_url))
+            rankings.append((index, score, program_name, program_location, program_url, program_gpa, program_colleges))
             
     rankings.sort(key=lambda x: x[1], reverse=True)
     l = min(len(rankings), MAX_RESULTS)
     rankings = rankings[:l]
 
     json_data = [
-    {"id": id, "program": program_name, "program_location": program_location, "url": program_url}
-    for id, score, program_name, program_location, program_url in rankings]
+    {"id": id, "program": program_name, "program_location": program_location, "url": program_url, "gpa": program_gpa, "colleges": program_colleges}
+    for id, score, program_name, program_location, program_url, program_gpa, program_colleges in rankings]
 
     # json_string = json.dumps(json_data, indent=2)
 
@@ -212,7 +215,8 @@ def rank_programs_jaccard(query):
 
     return json_string
 
-def filtering(search, gpa="", college="", location="", flexible=True):
+def filtering(search, gpa="", college="", location="", flexible="true"):
+    # print(flexible)
     filtered_list = []
     for program in search:
         #print(program['program_location'])
@@ -221,24 +225,36 @@ def filtering(search, gpa="", college="", location="", flexible=True):
         if location != "":
             # print("location was entered")
             # print(type(location))
-            loc__filter_toks = tokenize(location)
+            loc_filter_toks = tokenize(location)
             prog_loc_toks = tokenize(program['program_location'])
-            loc_sim = jaccard(prog_loc_toks, loc__filter_toks)
+            loc_sim = jaccard(prog_loc_toks, loc_filter_toks)
             sims.append(loc_sim)
 
             #note: issue with united kingdom for some reason, figure out why
 
-        # if college != "":
-        #     college__filter_toks = tokenize(college)
-        #     prog_college_toks = tokenize(program['college'])
-        #     college_sim = jaccard(prog_loc_toks, loc__filter_toks)
-        #     sims.append(college_sim)
+        if college != "":
+            college_filter_toks = tokenize(college)
+            # print(college_filter_toks)
+            prog_college_toks = tokenize(program['colleges'])
+            # print(prog_college_toks)
 
-        # if gpa != "":
-        #     gpa__filter_toks = tokenize(gpa)
-        #     prog_gpa_toks = tokenize(program['gpa'])
-        #     gpa_sim = jaccard(prog_loc_toks, loc__filter_toks)
-        #     sims.append(gpa_sim)
+            college_sim = jaccard(prog_college_toks, college_filter_toks)
+            # print(college_sim)
+            sims.append(college_sim)
+
+        if gpa != "":
+            gpa_lower_bound = float(gpa[0:3])
+            # print(gpa_lower_bound)
+            gpa_upper_bound = float(gpa[4:])
+            # print(gpa_upper_bound)
+            prog_gpa = float(program['gpa'])
+            gpa_sim = 0
+            # gpa__filter_toks = tokenize(gpa)
+            # prog_gpa_toks = tokenize(program['gpa'])
+            if prog_gpa != -1:
+                if (prog_gpa <= gpa_upper_bound):
+                    gpa_sim = 1
+            sims.append(gpa_sim)
 
         # if department != "":
         #     dept__filter_toks = tokenize(department)
@@ -246,20 +262,28 @@ def filtering(search, gpa="", college="", location="", flexible=True):
         #     dept_sim = jaccard(prog_dept_toks, dept__filter_toks)
         #     sims.append(dept_sim)
     
-        if not flexible:
-            #print("flexible")
+
+        # checked = true, so when flexible
+        # false = not flexible = unchecked
+        if flexible == "true":
+            # print("flexible", flexible)
             if any(sims):
                 filtered_list.append(program)
-        if flexible:
-            #print("not flexible")
+        if flexible == "false":
+            # print("not flexible")
             if all(sims):
                 filtered_list.append(program)
-    if len(sims) == 0:
-        #print("no filters chosen")
+        # print(sims)
+        # print("flexible?", any(sims))
+        # print("not flexible?", all(sims))
+
+    if len(filtered_list) == 0:
+        print("no filters chosen")
         #print("sims", sims)
         filtered_list = search
     # print(filtered_list)
     # print(sims)
+    
 
     #print("len filtered", len(filtered_list))
     json_string = json.dumps(filtered_list, indent=2)
@@ -275,11 +299,17 @@ def home():
 def search():
     text = request.args.get("title")
     min_gpa = request.args.get("gpa")
+    # print("gpa", min_gpa)
+    # print("gpa type", type(min_gpa))
     college = request.args.get("college")
+    # print("college", college)
+    # print("college type", type(college))
     location = request.args.get("location")
     # print("type", type(location))
     # print("location", location)
     flexible = request.args.get("flexible")
+    # print(type(flexible))
+    # print(flexible)
     rank = rank_program_results(text)
     sent_rank = sentiment_ranking(text, rank)
     filtered = filtering(sent_rank, min_gpa, college, location, flexible)

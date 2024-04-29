@@ -86,5 +86,10 @@ def sentiment_ranking(
 
     # return programs listed in ranked order
     ranked = [pair[0] for pair in sorted_pairs]
+    # print(ranked[0])
+    # create json data
+    json_data = ranked.copy()
+    for program in json_data:
+        program["rating"] = rating(program["program"])
 
     return create_json_data(ranked)

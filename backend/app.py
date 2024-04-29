@@ -9,6 +9,7 @@ import re
 
 from svd import *
 from sentiment_rank import sentiment_ranking
+from similarity import compute_composite_similarity, compute_cosine_similarity
 
 # number of results on one page
 MAX_RESULTS = 20
@@ -191,7 +192,11 @@ def rank_program_results(
                 + token_weight * token_score
             )
 
-            # print(program_name, name_score, location_score, token_score, score)
+            program_info = program_name_tokens.union(
+                program_location_tokens, program_tokens
+            )
+            combo = compute_composite_similarity(query, program_info, score)
+            score = combo
 
             rankings.append(
                 (
@@ -208,8 +213,10 @@ def rank_program_results(
     rankings.sort(key=lambda x: x[1], reverse=True)
     l = min(len(rankings), MAX_RESULTS)
     rankings = rankings[:l]
-    # TEST: make sure keys match up; maybe check csv
-    # print(rankings[0]) --> check for error
+    sim_ranked = [i for i in rankings if i[1] >= 0.5]
+    sim_ranked.sort(key=lambda x: x[1], reverse=True)
+    if sim_ranked != []:
+        rankings = sim_ranked
 
     json_data = [
         {
@@ -222,10 +229,6 @@ def rank_program_results(
         }
         for id, _, program_name, program_location, program_url, program_gpa, program_colleges in rankings
     ]
-
-    # json_string = json.dumps(json_data, indent=2)
-
-    # return json_string
     return json_data
 
 
@@ -241,7 +244,6 @@ def jaccard(s1, s2):
 
 
 def tokenize(text):
-    # print(type(text))
     text = text.lower()
     words = re.findall("[a-zA-Z]+", text)
     return set(words)
@@ -254,16 +256,49 @@ def rank_programs_jaccard(query):
 
         program_name = row["program"]
         program_location = row["location"]
+        program_tokens = row["tokens"]
 
-        program_info = tokenize(program_name).union(tokenize(program_location))
+        program_url = row["url"]
+        program_gpa = row["gpa"]
+        program_colleges = row["colleges"]
+
+        program_info = tokenize(program_name).union(
+            tokenize(" ".join(program_tokens)), tokenize(program_location)
+        )
         similarity = jaccard(query_words, program_info)
-
-        if similarity > 0:
-            rankings.append((index, similarity, program_name, program_location))
+        if query == "":
+            rankings.append(
+                (
+                    index,
+                    -1,
+                    program_name,
+                    program_location,
+                    program_url,
+                    program_gpa,
+                    program_colleges,
+                )
+            )
+        else:
+            if similarity > 0:
+                rankings.append(
+                    (
+                        index,
+                        similarity,
+                        program_name,
+                        program_location,
+                        program_url,
+                        program_gpa,
+                        program_colleges,
+                    )
+                )
 
     rankings.sort(key=lambda x: x[1], reverse=True)
     l = min(len(rankings), MAX_RESULTS)
     rankings = rankings[:l]
+    sim_ranked = [i for i in rankings if i[1] >= 0.5]
+    sim_ranked.sort(key=lambda x: x[1], reverse=True)
+    if sim_ranked != []:
+        rankings = sim_ranked
 
     json_data = [
         {
@@ -271,20 +306,18 @@ def rank_programs_jaccard(query):
             "program": program_name,
             "program_location": program_location,
             "url": program_url,
+            "gpa": program_gpa,
+            "colleges": program_colleges,
         }
-        for id, _, program_name, program_location, program_url in rankings
+        for id, _, program_name, program_location, program_url, program_gpa, program_colleges in rankings
     ]
 
-    json_string = json.dumps(json_data, indent=2)
-
-    return json_string
+    return json_data
 
 
 def filtering(search, gpa="", college="", location="", flexible="true"):
-    # print(flexible)
     filtered_list = []
     for program in search:
-        # print(program['program_location'])
         sims = []
 
         if location != "":
@@ -299,25 +332,17 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
 
         if college != "":
             college_filter_toks = tokenize(college)
-            # print(college_filter_toks)
             prog_college_toks = tokenize(program["colleges"])
-            # print(prog_college_toks)
-
             college_sim = jaccard(prog_college_toks, college_filter_toks)
-            # print(college_sim)
             sims.append(college_sim)
 
         if gpa != "":
             gpa_lower_bound = float(gpa[0:3])
-            # print(gpa_lower_bound)
             gpa_upper_bound = float(gpa[4:])
-            # print(gpa_upper_bound)
             prog_gpa = float(program["gpa"])
             gpa_sim = 0
-            # gpa__filter_toks = tokenize(gpa)
-            # prog_gpa_toks = tokenize(program['gpa'])
             if prog_gpa != -1:
-                if prog_gpa <= gpa_upper_bound:
+                if gpa_lower_bound <= prog_gpa <= gpa_upper_bound:
                     gpa_sim = 1
             sims.append(gpa_sim)
 
@@ -342,15 +367,9 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
         # print("not flexible?", all(sims))
 
     if len(filtered_list) == 0:
-        print("no filters chosen")
-        # print("sims", sims)
         filtered_list = search
-    # print(filtered_list)
-    # print(sims)
 
-    # print("len filtered", len(filtered_list))
     json_string = json.dumps(filtered_list, indent=2)
-    # print(json_string)
     return json_string
 
 
@@ -363,18 +382,10 @@ def home():
 def search():
     text = request.args.get("title")
     min_gpa = request.args.get("gpa")
-    # print("gpa", min_gpa)
-    # print("gpa type", type(min_gpa))
     college = request.args.get("college")
-    # print("college", college)
-    # print("college type", type(college))
     location = request.args.get("location")
-    # print("type", type(location))
-    # print("location", location)
     flexible = request.args.get("flexible")
-    # print(type(flexible))
-    # print(flexible)
-    rank = rank_program_results(text)
+    rank = rank_programs_jaccard(text)
     sent_rank = sentiment_ranking(text, rank)
     filtered = filtering(sent_rank, min_gpa, college, location, flexible)
     return filtered

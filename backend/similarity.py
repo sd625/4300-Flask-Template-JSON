@@ -2,31 +2,25 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.metrics.distance import edit_distance
+from numpy import linalg as LA
+
+# combine edit distance with cosine similarity
 
 
-def compute_cosine_similarity(query, review_tokens):
+def compute_cosine_similarity(query, tokens):
+
     # Convert texts to vectors
-    vectorizer = CountVectorizer().fit([query, review_tokens])
-    vector_query, vector_review_tokens = vectorizer.transform([query, review_tokens])
+    text = " ".join(list(tokens))
+    vectorizer = CountVectorizer().fit([query, text])
+    q_vec, tokens_vec = vectorizer.transform([query, text])
 
-    # Compute cosine similarity
-    cosine_sim = cosine_similarity(vector_query, vector_review_tokens)[0][0]
+    # Compute cosine similarity -- use sklearn because can handle different sized arrays
+    cosine_sim = cosine_similarity(q_vec, tokens_vec)[0][0]
     return cosine_sim
 
 
-# def compute_normalized_edit_distance(query, review_tokens):
-#     # Compute edit distance
-#     edit_dist = edit_distance(query, review_tokens)
-
-#     # Normalize edit distance
-#     max_length = max(len(query), len(review_tokens))
-#     normalized_edit_dist = edit_dist / max_length
-
-#     return 1 - normalized_edit_dist  # Convert to similarity score
-
-
 def combine_similarity_scores(
-    cosine_sim, normalized_edit_dist, cosine_weight=0.7, edit_dist_weight=0.3
+    cosine_sim, normalized_edit_dist, cosine_weight=0.5, edit_dist_weight=0.5
 ):
     # Combine cosine similarity and normalized edit distance scores
     combined_score = (
@@ -36,10 +30,9 @@ def combine_similarity_scores(
 
 
 def compute_composite_similarity(
-    query, review_tokens, normalized_edit_dist, cosine_weight=0.7, edit_dist_weight=0.3
+    query, review_tokens, normalized_edit_dist, cosine_weight=0.8, edit_dist_weight=0.2
 ):
-    cosine_sim = compute_cosine_similarity(query, " ".join(review_tokens))
-    print("cosine sim", cosine_sim)
+    cosine_sim = compute_cosine_similarity(query, review_tokens)
     composite_similarity = combine_similarity_scores(
         cosine_sim, normalized_edit_dist, cosine_weight, edit_dist_weight
     )

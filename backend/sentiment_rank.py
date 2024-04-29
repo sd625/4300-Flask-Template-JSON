@@ -33,11 +33,11 @@ nb_pred = nb_classifier.predict(X_test_vectorized)
 nb_report = classification_report(y_test, nb_pred)
 
 # random forest classifier is better at accounting for non linear relationships
-rf_classifer = RandomForestClassifier()
-rf_classifer.fit(X_train_vectorized, y_train)
+rf_classifier = RandomForestClassifier()
+rf_classifier.fit(X_train_vectorized, y_train)
 
 # glance at rf accuracy
-rf_pred = rf_classifer.predict(X_test_vectorized)
+rf_pred = rf_classifier.predict(X_test_vectorized)
 rf_report = classification_report(y_test, rf_pred)
 
 

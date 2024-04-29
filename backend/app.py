@@ -319,6 +319,7 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
     filtered_list = []
     for program in search:
         sims = []
+        filters = 0
 
         if location != "":
             # print("location was entered")
@@ -327,6 +328,7 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
             prog_loc_toks = tokenize(program["program_location"])
             loc_sim = jaccard(prog_loc_toks, loc_filter_toks)
             sims.append(loc_sim)
+            filters += 1
 
             # note: issue with united kingdom for some reason, figure out why
 
@@ -335,6 +337,7 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
             prog_college_toks = tokenize(program["colleges"])
             college_sim = jaccard(prog_college_toks, college_filter_toks)
             sims.append(college_sim)
+            filters += 1
 
         if gpa != "":
             gpa_lower_bound = float(gpa[0:3])
@@ -342,9 +345,10 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
             prog_gpa = float(program["gpa"])
             gpa_sim = 0
             if prog_gpa != -1:
-                if gpa_lower_bound <= prog_gpa <= gpa_upper_bound:
+                if prog_gpa <= gpa_upper_bound:
                     gpa_sim = 1
             sims.append(gpa_sim)
+            filters += 1
 
         # if department != "":
         #     dept__filter_toks = tokenize(department)
@@ -366,7 +370,7 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
         # print("flexible?", any(sims))
         # print("not flexible?", all(sims))
 
-    if len(filtered_list) == 0:
+    if (len(filtered_list) == 0) & (filters == 0):
         filtered_list = search
 
     json_string = json.dumps(filtered_list, indent=2)

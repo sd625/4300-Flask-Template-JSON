@@ -317,9 +317,9 @@ def rank_programs_jaccard(query):
 
 def filtering(search, gpa="", college="", location="", flexible="true"):
     filtered_list = []
+    filters = 0
     for program in search:
         sims = []
-        filters = 0
 
         if location != "":
             # print("location was entered")

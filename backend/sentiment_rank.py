@@ -5,7 +5,6 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import RandomForestClassifier
-import json
 from sklearn.metrics import classification_report
 
 
@@ -53,6 +52,7 @@ def sentiment_ranking(
     vectorizer=vectorizer,
     classifier=rf_classifier,
 ):
+    if query == "": return filtered_programs
     def rating(name):
         if name in program_rating:
             return program_rating[name]

@@ -8,34 +8,37 @@ import numpy as np
 import re
 
 from svd import *
-from sentiment_rank import *
+from sentiment_rank import sentiment_ranking
 
-#number of results on one page
+# number of results on one page
 MAX_RESULTS = 20
 
-# ROOT_PATH for linking with all your files. 
+# ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
-os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
+os.environ["ROOT_PATH"] = os.path.abspath(os.path.join("..", os.curdir))
 
 # Get the directory of the current script
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
 # Specify the path to the JSON file relative to the current script
-json_file_path = os.path.join(current_directory, 'cornell-programs-tokens.json')
+json_file_path = os.path.join(current_directory, "cornell-programs-tokens.json")
 
 # Assuming your JSON data is stored in a file named 'init.json'
-with open(json_file_path, 'r') as file:
+with open(json_file_path, "r") as file:
     data = json.load(file)
-    programs_df = pd.DataFrame(data['programs'])
+    programs_df = pd.DataFrame(data["programs"])
 
 app = Flask(__name__)
 CORS(app)
 
+
 def insertion_cost(message, j):
     return 1
 
+
 def deletion_cost(query, i):
     return 1
+
 
 def substitution_cost(query, message, i, j):
     if query[i - 1] == message[j - 1]:
@@ -43,8 +46,9 @@ def substitution_cost(query, message, i, j):
     else:
         return 1
 
+
 def edit_matrix_func(query, message, ins_cost_func, del_cost_func, sub_cost_func):
-    
+
     m = len(query) + 1
     n = len(message) + 1
 
@@ -61,19 +65,23 @@ def edit_matrix_func(query, message, ins_cost_func, del_cost_func, sub_cost_func
                 chart[i - 1, j - 1] + sub_cost_func(query, message, i, j),
             )
     return chart
-    
+
+
 def edit_distance(
     query: str, message: str, ins_cost_func: int, del_cost_func: int, sub_cost_func: int
 ) -> int:
-    
+
     query = query.lower()
     message = message.lower()
 
-    edit_matrix = edit_matrix_func(query, message, ins_cost_func, del_cost_func, sub_cost_func)
-      
-    edit_distance = edit_matrix[(len(query),len(message))]
+    edit_matrix = edit_matrix_func(
+        query, message, ins_cost_func, del_cost_func, sub_cost_func
+    )
+
+    edit_distance = edit_matrix[(len(query), len(message))]
 
     return edit_distance
+
 
 def rank_program_results(
     query: str,
@@ -81,27 +89,43 @@ def rank_program_results(
     rankings = []
 
     query_tokens = tokenize(query)
-    
+
     for index, row in programs_df.iterrows():
-        
-        program_name = row['program']
+
+        program_name = row["program"]
         program_name_tokens = tokenize(program_name)
 
-        program_location = row['location']
+        program_location = row["location"]
         program_location_tokens = tokenize(program_location)
-        
-        program_tokens = row['tokens']
 
-        program_url = row['url']
-        program_gpa = row['gpa']
-        program_colleges = row['colleges']
+        program_tokens = row["tokens"]
+
+        program_url = row["url"]
+        program_gpa = row["gpa"]
+        program_colleges = row["colleges"]
 
         # if query is empty, return programs in alphabetical order
         if query == "":
-            rankings.append((index, -1, program_name, program_location, program_url))
+            rankings.append(
+                (
+                    index,
+                    -1,
+                    program_name,
+                    program_location,
+                    program_url,
+                    program_gpa,
+                    program_colleges,
+                )
+            )
         else:
             name_edit_distances = [
-                edit_distance(query_token, program_token, insertion_cost, deletion_cost, substitution_cost)
+                edit_distance(
+                    query_token,
+                    program_token,
+                    insertion_cost,
+                    deletion_cost,
+                    substitution_cost,
+                )
                 for query_token in query_tokens
                 for program_token in program_name_tokens
             ]
@@ -110,32 +134,45 @@ def rank_program_results(
             max_name_distance = max(len(query_tokens), len(program_name_tokens))
             normalized_name_edit_distance = name_edit_distance / max_name_distance
             name_jaccard = jaccard(query_tokens, program_name_tokens)
-            name_score = max((1-normalized_name_edit_distance), name_jaccard)
+            name_score = max((1 - normalized_name_edit_distance), name_jaccard)
 
             location_edit_distances = [
-                edit_distance(query_token, location_token, insertion_cost, deletion_cost, substitution_cost)
+                edit_distance(
+                    query_token,
+                    location_token,
+                    insertion_cost,
+                    deletion_cost,
+                    substitution_cost,
+                )
                 for query_token in query_tokens
                 for location_token in program_location_tokens
             ]
             location_edit_distance = min(location_edit_distances)
-            
+
             location_jaccard = jaccard(query_tokens, program_location_tokens)
 
             max_location_distance = max(len(query_tokens), len(program_location_tokens))
-            normalized_location_edit_distance = location_edit_distance / max_location_distance
-            location_score = max((1-normalized_location_edit_distance), location_jaccard)
+            normalized_location_edit_distance = (
+                location_edit_distance / max_location_distance
+            )
+            location_score = max(
+                (1 - normalized_location_edit_distance), location_jaccard
+            )
 
-            
             token_edit_distances = [
-                edit_distance(query_token, program_token, insertion_cost, deletion_cost, substitution_cost)
+                edit_distance(
+                    query_token,
+                    program_token,
+                    insertion_cost,
+                    deletion_cost,
+                    substitution_cost,
+                )
                 for query_token in query_tokens
                 for program_token in program_tokens
             ]
-            
 
             max_token_distance = max(len(query_tokens), len(program_tokens))
 
-            
             if token_edit_distances:
                 token_edit_distance = min(token_edit_distances)
             else:
@@ -143,99 +180,127 @@ def rank_program_results(
 
             normalized_token_edit_distance = token_edit_distance / max_token_distance
             token_score = 1 - normalized_token_edit_distance
-            
 
             name_weight = 0.4
             location_weight = 0.55
             token_weight = 0.05
 
-            
-            score = (name_weight * name_score +
-                    location_weight * location_score + 
-                    token_weight * token_score)
-            
+            score = (
+                name_weight * name_score
+                + location_weight * location_score
+                + token_weight * token_score
+            )
 
             # print(program_name, name_score, location_score, token_score, score)
 
-            rankings.append((index, score, program_name, program_location, program_url, program_gpa, program_colleges))
-            
+            rankings.append(
+                (
+                    index,
+                    score,
+                    program_name,
+                    program_location,
+                    program_url,
+                    program_gpa,
+                    program_colleges,
+                )
+            )
+
     rankings.sort(key=lambda x: x[1], reverse=True)
     l = min(len(rankings), MAX_RESULTS)
     rankings = rankings[:l]
+    # TEST: make sure keys match up; maybe check csv
+    # print(rankings[0]) --> check for error
 
     json_data = [
-    {"id": id, "program": program_name, "program_location": program_location, "url": program_url, "gpa": program_gpa, "colleges": program_colleges}
-    for id, score, program_name, program_location, program_url, program_gpa, program_colleges in rankings]
+        {
+            "id": id,
+            "program": program_name,
+            "program_location": program_location,
+            "url": program_url,
+            "gpa": program_gpa,
+            "colleges": program_colleges,
+        }
+        for id, _, program_name, program_location, program_url, program_gpa, program_colleges in rankings
+    ]
 
     # json_string = json.dumps(json_data, indent=2)
 
     # return json_string
     return json_data
-      
+
 
 def jaccard(s1, s2):
     # s1 = tokenize(s1)
     # s2 = tokenize(s2)
     if len(s1) == 0 or len(s2) == 0:
-        return 0 
+        return 0
     intersection = len(s1.intersection(s2))
     union = len(s1.union(s2))
     jaccard = intersection / union
     return jaccard
+
 
 def tokenize(text):
     # print(type(text))
     text = text.lower()
     words = re.findall("[a-zA-Z]+", text)
     return set(words)
-    
+
+
 def rank_programs_jaccard(query):
     query_words = tokenize(query)
     rankings = []
     for index, row in programs_df.iterrows():
-        
-        program_name = row['program']
-        program_location = row['location']
-        
+
+        program_name = row["program"]
+        program_location = row["location"]
+
         program_info = tokenize(program_name).union(tokenize(program_location))
         similarity = jaccard(query_words, program_info)
 
         if similarity > 0:
             rankings.append((index, similarity, program_name, program_location))
-        
+
     rankings.sort(key=lambda x: x[1], reverse=True)
     l = min(len(rankings), MAX_RESULTS)
     rankings = rankings[:l]
 
     json_data = [
-    {"id": id, "program": program_name, "program_location": program_location, "url": program_url}
-    for id, _, program_name, program_location, program_url in rankings]
+        {
+            "id": id,
+            "program": program_name,
+            "program_location": program_location,
+            "url": program_url,
+        }
+        for id, _, program_name, program_location, program_url in rankings
+    ]
 
     json_string = json.dumps(json_data, indent=2)
 
     return json_string
 
+
 def filtering(search, gpa="", college="", location="", flexible="true"):
     # print(flexible)
     filtered_list = []
     for program in search:
-        #print(program['program_location'])
+        # print(program['program_location'])
         sims = []
 
         if location != "":
             # print("location was entered")
             # print(type(location))
             loc_filter_toks = tokenize(location)
-            prog_loc_toks = tokenize(program['program_location'])
+            prog_loc_toks = tokenize(program["program_location"])
             loc_sim = jaccard(prog_loc_toks, loc_filter_toks)
             sims.append(loc_sim)
 
-            #note: issue with united kingdom for some reason, figure out why
+            # note: issue with united kingdom for some reason, figure out why
 
         if college != "":
             college_filter_toks = tokenize(college)
             # print(college_filter_toks)
-            prog_college_toks = tokenize(program['colleges'])
+            prog_college_toks = tokenize(program["colleges"])
             # print(prog_college_toks)
 
             college_sim = jaccard(prog_college_toks, college_filter_toks)
@@ -247,12 +312,12 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
             # print(gpa_lower_bound)
             gpa_upper_bound = float(gpa[4:])
             # print(gpa_upper_bound)
-            prog_gpa = float(program['gpa'])
+            prog_gpa = float(program["gpa"])
             gpa_sim = 0
             # gpa__filter_toks = tokenize(gpa)
             # prog_gpa_toks = tokenize(program['gpa'])
             if prog_gpa != -1:
-                if (prog_gpa <= gpa_upper_bound):
+                if prog_gpa <= gpa_upper_bound:
                     gpa_sim = 1
             sims.append(gpa_sim)
 
@@ -261,7 +326,6 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
         #     prog_dept_toks = tokenize(program['department'])
         #     dept_sim = jaccard(prog_dept_toks, dept__filter_toks)
         #     sims.append(dept_sim)
-    
 
         # checked = true, so when flexible
         # false = not flexible = unchecked
@@ -279,13 +343,12 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
 
     if len(filtered_list) == 0:
         print("no filters chosen")
-        #print("sims", sims)
+        # print("sims", sims)
         filtered_list = search
     # print(filtered_list)
     # print(sims)
-    
 
-    #print("len filtered", len(filtered_list))
+    # print("len filtered", len(filtered_list))
     json_string = json.dumps(filtered_list, indent=2)
     # print(json_string)
     return json_string
@@ -293,7 +356,8 @@ def filtering(search, gpa="", college="", location="", flexible="true"):
 
 @app.route("/")
 def home():
-    return render_template('base.html',title="sample html")
+    return render_template("base.html", title="sample html")
+
 
 @app.route("/search_programs")
 def search():
@@ -316,6 +380,5 @@ def search():
     return filtered
 
 
-
-if 'DB_NAME' not in os.environ:
-    app.run(debug=True,host="0.0.0.0",port=5000)
+if "DB_NAME" not in os.environ:
+    app.run(debug=True, host="0.0.0.0", port=5000)

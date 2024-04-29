@@ -43,7 +43,7 @@ rf_report = classification_report(y_test, rf_pred)
 
 # program and median rating
 group = data.groupby("program")["review_rating"].median()
-program_rating = {f"{name}": rating for i, (name, rating) in enumerate(group.items())}
+program_rating = {f"{name}": rating for _, (name, rating) in enumerate(group.items())}
 
 
 # get program rating return 0 if program has no reviews
@@ -86,7 +86,7 @@ def sentiment_ranking(
 
     # return programs listed in ranked order
     ranked = [pair[0] for pair in sorted_pairs]
-    # print(ranked[0])
+
     # create json data
     json_data = ranked.copy()
     for program in json_data:
